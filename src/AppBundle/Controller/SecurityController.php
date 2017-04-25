@@ -2,9 +2,12 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\User;
+use AppBundle\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Request;
 
 class SecurityController extends Controller
 {
@@ -23,4 +26,38 @@ class SecurityController extends Controller
             'last_username' => $last_username
         ];
     }
+
+    /**
+     * @Route("/register", name="user_register")
+     * @Template()
+     * @param Request $request
+     * @return array
+     */
+    public function registerAction(Request $request) {
+        $form = $this->createForm(UserType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            /** @var User $user */
+            $user = $form->getData();
+
+            $encrypter = $this->get('security.password_encoder');
+
+            $user->setPassword(
+                $encrypter->encodePassword($user, $user->getPasswordRaw())
+            );
+
+            $mgr = $this->getDoctrine()->getManager();
+            $mgr->persist($user);
+            $mgr->flush();
+
+            return $this->redirectToRoute('user_login');
+        }
+
+        return [
+            'form' => $form->createView()
+        ];
+    }
+
 }

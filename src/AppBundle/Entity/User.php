@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * User
@@ -26,6 +27,7 @@ class User implements UserInterface
      * @var string
      *
      * @ORM\Column(name="username", type="string", length=255, unique=true)
+     * @Assert\NotBlank()
      */
     private $username;
 
@@ -33,6 +35,8 @@ class User implements UserInterface
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=255, unique=true)
+     * @Assert\Email()
+     * @Assert\NotBlank()
      */
     private $email;
 
@@ -43,6 +47,11 @@ class User implements UserInterface
      */
     private $password;
 
+    /**
+     * @var string
+     * @Assert\Length(min="3")
+     */
+    private $password_raw;
 
     /**
      * Get id
@@ -168,6 +177,22 @@ class User implements UserInterface
     public function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
+    }
+
+    /**
+     * @return string
+     */
+    public function getPasswordRaw()
+    {
+        return $this->password_raw;
+    }
+
+    /**
+     * @param string $password_raw
+     */
+    public function setPasswordRaw($password_raw)
+    {
+        $this->password_raw = $password_raw;
     }
 }
 
