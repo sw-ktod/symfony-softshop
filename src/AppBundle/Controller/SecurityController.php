@@ -13,6 +13,14 @@ class SecurityController extends Controller
     * @Template()
     */
     public function loginAction() {
-    }
+        $auth = $this->get('security.authentication_utils');
 
+        $error = $auth->getLastAuthenticationError();
+        $last_username = $auth->getLastUsername();
+
+        return [
+            'error' => $error,
+            'last_username' => $last_username
+        ];
+    }
 }
