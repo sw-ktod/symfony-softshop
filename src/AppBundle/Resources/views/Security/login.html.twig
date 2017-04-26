@@ -1,8 +1,11 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+
 {% if error %}
     <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
 {% endif %}
 
-<form action="{{ path('user_login') }}" method="post">
+<form action="{{ path('user_check') }}" method="post">
     <label for="username">Username:</label>
     <input type="text" id="username" name="_username" value="{{ last_username }}" />
 
@@ -11,3 +14,5 @@
 
     <button type="submit">login</button>
 </form>
+
+{% endblock %}

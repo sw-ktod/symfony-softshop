@@ -7,6 +7,7 @@ use AppBundle\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class SecurityController extends Controller
@@ -25,6 +26,17 @@ class SecurityController extends Controller
             'error' => $error,
             'last_username' => $last_username
         ];
+    }
+
+    /**
+     * @Route("/login_check", name="user_check")
+     * @param Request $request
+     *
+     * @return RedirectResponse
+     */
+    public function checkAction(Request $request)
+    {
+        return $this->redirectToRoute('user_login');
     }
 
     /**
