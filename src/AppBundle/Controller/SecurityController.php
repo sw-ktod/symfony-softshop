@@ -72,4 +72,10 @@ class SecurityController extends Controller
         ];
     }
 
+    /**
+     * @Route("/logout", name="user_logout")
+     */
+    public function logoutAction() {
+    }
+
 }

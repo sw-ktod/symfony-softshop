@@ -22,13 +22,17 @@ security:
             anonymous: ~
             pattern: ^/
             form_login:
+                always_use_default_target_path: true
+                default_target_path: shop
                 provider: user_provider
                 login_path: user_login
                 check_path: user_check
             logout:
-                path: user_logout
+                path: /logout
+                target: /
 
     access_control:
         - { path: ^/register , roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login , roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/shop, roles: [ROLE_USER] }
         - { path: ^/, roles: [ROLE_USER] }

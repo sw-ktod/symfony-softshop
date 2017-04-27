@@ -1,0 +1,17 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+<a href="{{ path('product_create') }}">Add product</a>
+{% for product in products %}
+    <a href="{{ path('product_get', {'id': product.getId()}) }}">
+        <div style="border: solid 1px black;">
+            <div>
+                <h3>
+                    {{ product.getName() }}
+                </h3>
+            </div>
+
+        </div>
+    </a>
+{% endfor %}
+
+{% endblock %}

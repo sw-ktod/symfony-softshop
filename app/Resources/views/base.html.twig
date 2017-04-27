@@ -2,12 +2,37 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}SoftShop!{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        <link rel="stylesheet" type="text/css" href="https://bootswatch.com/superhero/bootstrap.min.css" />
     </head>
     <body>
+        {% block nav %}
+            <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+
+                    </div>
+                    {% if is_granted("ROLE_USER") %}
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href={{ path('user_logout') }}>Logout</a></li>
+                        </ul>
+                    {% else %}
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href={{ path('user_login') }}>Login</a></li>
+                            <li><a href={{ path('user_register') }}>Register</a></li>
+                        </ul>
+                    {% endif %}
+                </div>
+            </nav>
+        {% endblock %}
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
     </body>
 </html>
+
+
+{#{% if user %}#}
+{#{% else %}#}
+{#{% endif %}#}
