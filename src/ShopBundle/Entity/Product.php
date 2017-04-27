@@ -45,13 +45,8 @@ class Product
     private $price;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="categoryId", type="integer")
-     */
-    private $categoryId;
-    /**
      * @var Category
+     * @ORM\Column(name="category_id", type="integer")
      * @ManyToOne(targetEntity="ShopBundle\Entity\Category")
      * @JoinColumn(name="categoryId", referencedColumnName="id")
      */
@@ -144,28 +139,6 @@ class Product
     public function getPrice()
     {
         return $this->price;
-    }
-
-    /**
-     * Set categoryId
-     * @param Category $category
-     * @return $this
-     */
-    public function setCategoryId(Category $category)
-    {
-        $this->categoryId = $category->getId();
-
-        return $this;
-    }
-
-    /**
-     * Get categoryId
-     *
-     * @return int
-     */
-    public function getCategoryId()
-    {
-        return $this->categoryId;
     }
 
     /**

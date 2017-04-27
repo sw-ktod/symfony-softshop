@@ -23,15 +23,8 @@ class Cart
     private $id;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="userId", type="integer", unique=true)
-     */
-    private $userId;
-
-    /**
      * @var User
-     *
+     * @ORM\Column(name="user_id", type="integer", unique=true)
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\User")
      */
     private $user;
@@ -44,30 +37,6 @@ class Cart
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set clientId
-     *
-     * @param integer $userId
-     *
-     * @return Cart
-     */
-    public function setUserId($userId)
-    {
-        $this->userId = $userId;
-
-        return $this;
-    }
-
-    /**
-     * Get clientId
-     *
-     * @return int
-     */
-    public function getClientId()
-    {
-        return $this->userId;
     }
 
     /**
