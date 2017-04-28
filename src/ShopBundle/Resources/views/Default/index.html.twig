@@ -1,5 +1,10 @@
 {% extends '::base.html.twig' %}
 {% block body %}
 
+    {% for category in categories %}
+        <a href={{ path('product_list', {'category_id': category.getId}) }}>
+            {{ category.getName() }}
+        </a>
+    {% endfor %}
 
 {% endblock %}

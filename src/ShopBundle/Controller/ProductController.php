@@ -96,11 +96,22 @@ class ProductController extends Controller
      * @param Request $request
      * @return array
      */
-    public function listAction(Request $request) {
-        $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
+    public function listAction(Request $request)
+    {
+        $query = $request->query;
+        $productRepository = $this->getDoctrine()->getRepository(Product::class);
+        if (!$query->count()) {
+            return [
+                'products' => $productRepository->findAll()
+            ];
+        }
+
+        $queryParams = [
+            'category_id' => $query->get('category_id')
+        ];
 
         return [
-            'products'=>$products
+            'products' => $productRepository->findBy($queryParams)
         ];
     }
 }
