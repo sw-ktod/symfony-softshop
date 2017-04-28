@@ -54,10 +54,10 @@ class SecurityController extends Controller
             /** @var User $user */
             $user = $form->getData();
 
-            $encrypter = $this->get('security.password_encoder');
+            $enchanter = $this->get('security.password_encoder');
 
             $user->setPassword(
-                $encrypter->encodePassword($user, $user->getPasswordRaw())
+                $enchanter->encodePassword($user, $user->getPasswordRaw())
             );
 
             $mgr = $this->getDoctrine()->getManager();
