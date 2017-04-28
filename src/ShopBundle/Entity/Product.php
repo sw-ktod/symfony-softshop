@@ -46,11 +46,18 @@ class Product
 
     /**
      * @var Category
-     * @ORM\Column(name="category_id", type="integer")
+     *
      * @ManyToOne(targetEntity="ShopBundle\Entity\Category")
-     * @JoinColumn(name="categoryId", referencedColumnName="id")
+     * @JoinColumn(name="category_id", referencedColumnName="id")
+     *
      */
     private $category;
+
+    /**
+     * @var int
+     * @ORM\Column(name="category_id", type="integer")
+     */
+    private $category_id;
 
     /**
      * @var int
@@ -176,9 +183,29 @@ class Product
     /**
      * @param Category $category
      */
-    public function setCategory($category)
+    public function setCategory(Category $category)
     {
         $this->category = $category;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCategoryId()
+    {
+        return $this->category_id;
+    }
+
+    /**
+     * @param mixed $category_id
+     *
+     * @return $this
+     */
+    public function setCategoryId($category_id)
+    {
+        $this->category_id = $category_id;
+
+        return $this;
     }
 }
 

@@ -18,8 +18,6 @@ class Category
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\OneToMany(targetEntity="ShopBundle\Entity\Product", mappedBy="categoryId", cascade={"ALL"}, indexBy="id")
-
      */
     private $id;
 
@@ -29,9 +27,6 @@ class Category
      * @ORM\Column(name="name", type="string", length=255, unique=true)
      */
     private $name;
-
-    /**
-     */
 
     /**
      * Get id
