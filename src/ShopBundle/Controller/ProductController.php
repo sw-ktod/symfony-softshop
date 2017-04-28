@@ -2,6 +2,7 @@
 
 namespace ShopBundle\Controller;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use ShopBundle\Entity\Category;
 use ShopBundle\Entity\Product;
@@ -29,7 +30,7 @@ class ProductController extends Controller
             $product->setCategory(
                 $this->getDoctrine()
                     ->getRepository(Category::class)
-                    ->find($product->getCategoryId())
+                    ->find($product->getCategory()->getId())
             );
             $product->setVisitedCount(0);
 
@@ -54,16 +55,41 @@ class ProductController extends Controller
     }
     /**
      * @Route("/product/{id}", name="product_get")
+     * @Method("GET")
      * @Template()
      * @param Request $request
+     * @return array
      */
-    public function getAction(Request $request) {
-        $product = $this->getDoctrine()->getRepository(Product::class)->find($request->attributes->get('id'));
+    public function getAction(Request $request)
+    {
+        $product_id = $request->attributes->get('id');
+        $product = $this->getDoctrine()
+            ->getRepository(Product::class)
+            ->find($product_id);
+
+        $product->setVisitedCount($product->getVisitedCount() + 1);
+
+        $trace = $this->get('session')->get('trace');
+
+        if(!isset($trace) || !is_array($trace)) {
+            $trace = [];
+        }
+
+        if(!in_array('product/'.$product_id, $trace, true)) {
+            $mgr = $this->getDoctrine()
+                ->getManager();
+            $mgr->persist($product);
+            $mgr->flush();
+
+            $trace[] = 'product/'.$product_id;
+            $this->get('session')->set('trace', $trace);
+        }
 
         return [
-            'product'=>$product
+            'product' => $product
         ];
     }
+
     /**
      * @Route("/product", name="product_list")
      * @Template()
