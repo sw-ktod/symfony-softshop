@@ -19,7 +19,7 @@ class ProductType extends AbstractType
         $builder->add('name')
             ->add('description')
             ->add('price')
-            ->add('categoryId', EntityType::class, [
+            ->add('category', EntityType::class, [
                 'class' => 'ShopBundle:Category',
                 'choice_label' => function ($category) {
                     return $category->getName();
