@@ -7,6 +7,8 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
         <link rel="stylesheet" type="text/css" href="https://meyerweb.com/eric/tools/css/reset/reset.css" />
         <link rel="stylesheet" type="text/css" href="https://bootswatch.com/superhero/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+        <link href='https://fonts.googleapis.com/css?family=Coda:400&subset=latin' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" type="text/css" href="{{ asset('style.css') }}" />
     </head>
     <body>
@@ -29,6 +31,7 @@
                     <div class="navbar-header-inverse">
                     {% if is_granted("ROLE_USER") %}
                         <ul class="nav navbar-nav navbar-right">
+                            <li><a href="{{ path('cart_get') }}">Cart</a></li>
                             <li><a href={{ path('user_logout') }}>Logout</a></li>
                         </ul>
                     {% else %}

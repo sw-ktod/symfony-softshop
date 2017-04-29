@@ -1,6 +1,9 @@
+body {
+    font-family: 'Coda', cursive;
+}
 a, a:visited, a:active {
     text-decoration: none;
-    color: #ebebeb !important;
+    color: #ebebeb;
 }
 
 .flex {
@@ -9,4 +12,8 @@ a, a:visited, a:active {
 
 .justify-center {
     justify-content: center;
+}
+
+.align-self-end {
+    align-self: flex-end;
 }
