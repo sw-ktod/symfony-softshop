@@ -182,10 +182,13 @@ class Product
 
     /**
      * @param Category $category
+     * @return $this
      */
     public function setCategory(Category $category)
     {
         $this->category = $category;
+
+        return $this;
     }
 
     /**
