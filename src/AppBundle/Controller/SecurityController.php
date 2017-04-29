@@ -31,9 +31,9 @@ class SecurityController extends Controller
 
     /**
      * @Route("/login_check", name="user_check")
-     * @param Request $request
-     *
      * @return RedirectResponse
+     * @internal param Request $request
+     *
      */
     public function checkAction()
     {
@@ -55,9 +55,9 @@ class SecurityController extends Controller
             /** @var User $user */
             $user = $form->getData();
 
-            $enchanter = $this->get('security.password_encoder');
+            $encrypt = $this->get('security.password_encoder');
             $user->setPassword(
-                $enchanter->encodePassword($user, $user->getPasswordRaw())
+                $encrypt->encodePassword($user, $user->getPasswordRaw())
             );
 
             $em = $this->getDoctrine()->getManager();
@@ -67,9 +67,11 @@ class SecurityController extends Controller
                 $em->persist($user);
                 $em->flush();
 
-                $user_id = $user->getId();
-                $customerAccount = new CustomerAccount($user_id, 1000);
-
+                $customerAccount = new CustomerAccount();
+                $customerAccount
+                    ->setUserId($user->getId())
+                    ->setUser($user)
+                    ->setCashAmount(1000);
                 $em->persist($customerAccount);
                 $em->flush();
 
