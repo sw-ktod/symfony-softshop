@@ -27,11 +27,11 @@ class CustomerAccount
     /**
      * @var int
      * @ORM\Column(name="user_id", type="integer")
-     * @OneToOne(targetEntity="ShopBundle\Entity\Category")
      */
     private $user_id;
     /**
      * @var User
+     * @OneToOne(targetEntity="AppBundle\Entity\User")
      */
     private $user;
 
@@ -131,18 +131,6 @@ class CustomerAccount
 
         $this->cash_amount -= $amount;
 
-        return $this;
-    }
-
-    /**
-     * CustomerAccount constructor.
-     * @param $user_id
-     * @param $cash_amount
-     */
-    public function __construct($user_id, $cash_amount)
-    {
-        $this->setUserId($user_id)
-            ->setCashAmount($cash_amount);
         return $this;
     }
 }

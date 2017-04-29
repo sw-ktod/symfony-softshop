@@ -194,5 +194,9 @@ class User implements UserInterface
     {
         $this->password_raw = $password_raw;
     }
+    public function __construct()
+    {
+
+    }
 }
 
