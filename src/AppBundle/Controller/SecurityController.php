@@ -65,7 +65,6 @@ class SecurityController extends Controller
             $em->getConnection()->beginTransaction();
             try {
                 $em->persist($user);
-                $em->flush();
 
                 $customerAccount = new CustomerAccount();
                 $customerAccount
@@ -73,6 +72,7 @@ class SecurityController extends Controller
                     ->setUser($user)
                     ->setCashAmount(1000);
                 $em->persist($customerAccount);
+
                 $em->flush();
 
                 $em->getConnection()->commit();
