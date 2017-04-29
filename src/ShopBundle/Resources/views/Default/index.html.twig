@@ -1,10 +1,31 @@
 {% extends '::base.html.twig' %}
 {% block body %}
 
+<div class="jumbotron">
     {% for category in categories %}
-        <a href={{ path('product_list', {'category_id': category.getId}) }}>
-            {{ category.getName() }}
-        </a>
+        <div class="col-md-3 text-center">
+            <a href={{ path('product_list', {'category_id': category.getId}) }}>
+                {{ category.getName() }}
+            </a>
+        </div>
     {% endfor %}
+    {% for product in products %}
+        <div class="col-md-4 well well-md">
+            <a href={{ path('product_get', {'id': product.getId}) }}>
+                <div class="col-md-10">
+                    <h3>
+                        {{ product.getName() }}
+                    </h3>
+                    <div>
+                        {{ product.getDescription() }}
+                    </div>
+                </div>
+
+            </a>
+        </div>
+    {% endfor %}
+</div>
 
 {% endblock %}
+
+
