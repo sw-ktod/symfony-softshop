@@ -1,18 +1,39 @@
 {% extends '::base.html.twig' %}
 {% block body %}
-<a href="{{ path('product_create') }}">Add product</a>
-{% for product in products %}
-    <a href="{{ path('product_get', {'id': product.getId()}) }}">
-        <div style="border: solid 1px black;">
-            <div>
-                <h3>
-                    {{ product.getName() }}
-                    {{ product.visitedCount() }}
-                </h3>
-            </div>
 
+    <div class="list-group flex justify-center">
+        <div class="col-md-2 text-center list-group-item {% if active_id == null %}active{% endif %}">
+            <a href={{ path('product_list') }}>
+                All
+            </a>
         </div>
-    </a>
-{% endfor %}
+        {% for category in categories %}
+            <div class="col-md-2 text-center list-group-item {% if active_id == category.getId %}active{% endif %}">
+                <a href={{ path('product_list', {'category_id': category.getId}) }}>
+                    {{ category.getName() }}
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="list-group">
+        {% for product in products %}
+            <div class="col-md-4 well well-md text-center">
+                <a href={{ path('product_get', {'id': product.getId}) }}>
+                    <div class="col-md-10 table-bordered">
+                        <img class="img-thumbnail" src="{{ uploads_route ~ product.getImageUrl}}" alt="">
+                        <h4>
+                            {{ product.getName() }}
+                        </h4>
+                        <div>
+                            <div>{{ product.getDescription() }}</div>
+                        </div>
+                    </div>
+
+                </a>
+            </div>
+        {% endfor %}
+    </div>
 
 {% endblock %}
+
+

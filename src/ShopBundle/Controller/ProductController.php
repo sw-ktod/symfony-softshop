@@ -34,6 +34,16 @@ class ProductController extends Controller
             );
             $product->setVisitedCount(0);
 
+            $file = $product->getImage();
+            // Generate a unique name for the file before saving it
+            $fileName = md5(uniqid()).'.'.$file->guessExtension();
+            // Move the file to the directory where brochures are stored
+            $file->move(
+                $this->getParameter('upload_directory'),
+                $fileName
+            );
+            $product->setImageUrl($fileName);
+
             $mgr = $this->getDoctrine()->getManager();
             $mgr->persist($product);
             $mgr->flush();
@@ -100,18 +110,23 @@ class ProductController extends Controller
     {
         $query = $request->query;
         $productRepository = $this->getDoctrine()->getRepository(Product::class);
+        $categoryRepository = $this->getDoctrine()->getRepository(Category::class);
         if (!$query->count()) {
             return [
-                'products' => $productRepository->findAll()
+                'products' => $productRepository->findAll(),
+                'categories' => $categoryRepository->findAll(),
+                'active_id' => null
             ];
         }
 
         $queryParams = [
-            'category_id' => $query->get('category_id')
+            'category_id' => $query->get('category_id'),
         ];
 
         return [
-            'products' => $productRepository->findBy($queryParams)
+            'products' => $productRepository->findBy($queryParams),
+            'categories' => $categoryRepository->findAll(),
+            'active_id' => $query->get('category_id')
         ];
     }
 }

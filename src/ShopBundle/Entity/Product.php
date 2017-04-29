@@ -67,6 +67,15 @@ class Product
     private $visitedCount;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="image_url", type="string", length=999)
+     */
+    private $image_url;
+
+    private $image;
+
+    /**
      * Get id
      *
      * @return int
@@ -207,6 +216,43 @@ class Product
     public function setCategoryId($category_id)
     {
         $this->category_id = $category_id;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImageUrl()
+    {
+        return $this->image_url;
+    }
+
+    /**
+     * @param mixed $image_url
+     * @return $this
+     */
+    public function setImageUrl($image_url)
+    {
+        $this->image_url = $image_url;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param mixed $image
+     * @return $this
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
 
         return $this;
     }
