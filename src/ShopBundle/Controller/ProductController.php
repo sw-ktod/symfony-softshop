@@ -77,8 +77,6 @@ class ProductController extends Controller
             ->getRepository(Product::class)
             ->find($product_id);
 
-        $product->setVisitedCount($product->getVisitedCount() + 1);
-
         $trace = $this->get('session')->get('trace');
 
         if(!isset($trace) || !is_array($trace)) {
@@ -86,6 +84,8 @@ class ProductController extends Controller
         }
 
         if(!in_array('product/'.$product_id, $trace, true)) {
+            $product->setVisitedCount($product->getVisitedCount() + 1);
+
             $mgr = $this->getDoctrine()
                 ->getManager();
             $mgr->persist($product);
