@@ -76,6 +76,12 @@ class Product
     private $image;
 
     /**
+     * @var int
+     * @ORM\Column(name="quantity", type="integer")
+     */
+    private $quantity;
+
+    /**
      * Get id
      *
      * @return int
@@ -254,6 +260,24 @@ class Product
     {
         $this->image = $image;
 
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getQuantity()
+    {
+        return $this->quantity;
+    }
+
+    /**
+     * @param mixed $quantity
+     * @return $this
+     */
+    public function setQuantity($quantity)
+    {
+        $this->quantity = $quantity;
         return $this;
     }
 }
