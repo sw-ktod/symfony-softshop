@@ -41,7 +41,7 @@ twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
     globals:
-      uploads_route: '\uploads\products\'
+      uploads_route: '/uploads/products/'
 
 # Doctrine Configuration
 doctrine:
