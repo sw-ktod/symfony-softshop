@@ -12,20 +12,20 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
     public function load(ObjectManager $manager)
     {
         $c1 = new Category();
-        $c1->setName('Windows');
+        $c1->setName('Test category 1');
         $manager->persist($c1);
 
-        $c1 = new Category();
-        $c1->setName('Linux');
-        $manager->persist($c1);
+        $c2 = new Category();
+        $c2->setName('Test category 2');
+        $manager->persist($c2);
 
-        $c1 = new Category();
-        $c1->setName('Mac OS');
-        $manager->persist($c1);
+        $c3 = new Category();
+        $c3->setName('Test category 3');
+        $manager->persist($c3);
 
-        $c1 = new Category();
-        $c1->setName('MS DOS');
-        $manager->persist($c1);
+        $c4 = new Category();
+        $c4->setName('Test category 4');
+        $manager->persist($c4);
 
         $manager->flush();
     }
