@@ -23,7 +23,11 @@
                         {% if is_granted("ROLE_USER") %}
                             <ul class="nav navbar-nav">
                                 <li><a href="{{ path('product_list') }}">Products</a></li>
-                                <li><a href="{{ path('product_create') }}">Add product</a></li>
+                                {% if is_granted("ROLE_ADMIN")%}
+                                    <li><a href="{{ path('product_create') }}">Add product</a></li>
+                                    <li><a href="{{ path('purchase_history_list') }}">Purchase History Report</a></li>
+                                    <li><a href="{{ path('user_list') }}">Users</a></li>
+                                {% endif %}
                             </ul>
                         {% endif %}
                     </div>
@@ -31,8 +35,9 @@
                     <div class="navbar-header-inverse">
                     {% if is_granted("ROLE_USER") %}
                         <ul class="nav navbar-nav navbar-right">
-                            <li><a href="{{ path('user_list') }}">Users</a></li>
                             <li><a href="{{ path('cart_get') }}">Cart</a></li>
+                            <li><a href="{{ path('own_purchase_history_list') }}">Purchase History</a></li>
+                            <li><a href={{ path('user_self_edit') }}>Settings</a></li>
                             <li><a href={{ path('user_logout') }}>Logout</a></li>
                         </ul>
                     {% else %}
