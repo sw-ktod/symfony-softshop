@@ -63,6 +63,12 @@ class SecurityController extends Controller
             );
             $user->setIsBanned(false);
 
+            $userRole = $this
+                ->getDoctrine()
+                ->getRepository('AppBundle:Role')
+                ->findOneBy(['name'=>'ROLE_USER']);
+            $user->setRoles([$userRole]);
+
             $em = $this->getDoctrine()->getManager();
 
             $em->getConnection()->beginTransaction();
