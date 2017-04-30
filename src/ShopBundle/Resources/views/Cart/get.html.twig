@@ -35,7 +35,9 @@
                             </form>
                         </td>
                         <td>
-                            {{ item.product.getName }}
+                            <a href="{{ path('product_get', {'id': item.product.getId}) }}">
+                                {{ item.product.getName }}
+                            </a>
                         </td>
                         <td class="text-right">
                             {{ item.quantity }}
