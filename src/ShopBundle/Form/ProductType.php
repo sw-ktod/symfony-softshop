@@ -32,7 +32,9 @@ class ProductType extends AbstractType
                     'class' => 'form-control',
                     'id' => 'description',
                     'type' => 'text'
-                ]
+                ],
+                'required' => false,
+                'empty_data'  => null
             ])
             ->add('price', MoneyType::class, [
                 'label' => 'Price',
@@ -56,8 +58,10 @@ class ProductType extends AbstractType
             ->add('image', FileType::class, [
                 'label'=> 'Image',
                 'attr' => [
-                    'id' => 'image'
-                ]
+                    'id' => 'image',
+                ],
+                'required' => false,
+                'empty_data'  => null
             ])
             ->add('submit', SubmitType::class, [
                 'attr' => [

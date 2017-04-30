@@ -5,11 +5,8 @@
     <div class="col-md-5 well">
         <img class="img-thumbnail" src="{{ uploads_route ~ product.getImageUrl}}" alt="">
     </div>
-    <div class="col-md-5">
-        <div class="col-md-8">
-            <h4></h4>
-        </div>
-        <div class="col-md-12">
+    <div class="col-md-7">
+        <div class="col-md-10">
             <h2>
                 {{ product.getName }}
             </h2>
@@ -24,6 +21,9 @@
             <small class="pull-right">
                 Available {{ product.getQuantity }}
             </small>
+        </div>
+        <div class="col-md-2 text-right">
+            <a href="{{ path('product_edit', {'id': product.getId}) }}">Edit</a>
         </div>
         <div class="col-md-8 text-right pull-right">
             <form method="post" action="{{ path('cart_add') }}">
