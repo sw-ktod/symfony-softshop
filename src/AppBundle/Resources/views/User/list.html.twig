@@ -24,7 +24,9 @@
                             </a>
                         </td>
                         <td>
-                            {{ user.getUsername }}
+                            <a href="{{ path('user_get', {'id': user.getId}) }}">
+                                {{ user.getUsername }}
+                            </a>
                         </td>
                         <td>
                             {{ user.getName }}
