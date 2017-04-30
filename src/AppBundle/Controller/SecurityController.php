@@ -192,14 +192,13 @@ class SecurityController extends Controller
             $user = $form->getData();
             $encrypt = $this->get('security.password_encoder');
 
-            $current_password = $encrypt->encodePassword($this->getUser(), $user->getPasswordCurrent());
-            if($old_password !== $current_password) {
+            if(!$encrypt->isPasswordValid($user, $user->getPasswordCurrent())) {
                 throw new Exception('Invalid password');
             }
 
             $password = $old_password;
             if($user->getPasswordRaw()) {
-                $password = $encrypt->encodePassword($this->getUser(), $user->getPasswordRaw());
+                $password = $encrypt->encodePassword($user, $user->getPasswordRaw());
             }
 
             $user->setId($user_data->getId())
