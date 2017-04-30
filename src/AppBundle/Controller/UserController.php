@@ -12,6 +12,33 @@ use Symfony\Component\HttpFoundation\Request;
 
 class UserController extends Controller
 {
+
+    /**
+     * @Route("/user/{id}/addCash", name="user_add_cash")
+     * @Method("POST")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function addCashAction(Request $request) {
+        $customer_account = $this
+            ->getDoctrine()
+            ->getRepository(CustomerAccount::class)
+            ->findOneBy(['user_id' => $request->attributes->get('id')]);
+
+        $customer_account
+            ->addCash($request->request->get('amount'));
+
+        $em = $this
+            ->getDoctrine()
+            ->getManager();
+
+        $em->merge($customer_account);
+        $em->flush();
+
+        $referrerRoute = $request->headers->get('referer');
+
+        return $this->redirect($referrerRoute);
+    }
     /**
      * @Route("/user/{id}", name="user_get")
      * @Method("GET")
@@ -60,32 +87,4 @@ class UserController extends Controller
             'users' => $users
         ];
     }
-
-    /**
-     * @Route("/user/{id}/addCash", name="user_add_cash")
-     * @Method("POST")
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function addCashAction(Request $request) {
-        $customer_account = $this
-            ->getDoctrine()
-            ->getRepository(CustomerAccount::class)
-            ->findOneBy(['user_id' => $request->attributes->get('id')]);
-
-        $customer_account
-            ->addCash($request->request->get('amount'));
-
-        $em = $this
-            ->getDoctrine()
-            ->getManager();
-
-        $em->merge($customer_account);
-        $em->flush();
-
-        $referrerRoute = $request->headers->get('referer');
-
-        return $this->redirect($referrerRoute);
-    }
-
 }
