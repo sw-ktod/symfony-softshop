@@ -3,5 +3,12 @@
 {% block title %}ShopBundle:PurchaceHistory:get{% endblock %}
 
 {% block body %}
-<h1>Welcome to the PurchaceHistory:get page</h1>
+
+    <div class="col-md-6">
+        <h3>
+            Purchase # {{ purchase_history.getId }}
+        </h3>
+        {{ dump(purchase_history) }}
+    </div>
+
 {% endblock %}

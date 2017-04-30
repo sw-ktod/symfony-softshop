@@ -21,6 +21,8 @@ class ProductController extends Controller
      */
     public function createAction(Request $request)
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Unable to access this page!');
+
         $form = $this->createForm(ProductType::class);
         $form->handleRequest($request);
 
@@ -63,6 +65,8 @@ class ProductController extends Controller
      * @return array
      */
     public function editAction(Request $request) {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Unable to access this page!');
+
         $product_id = $request->attributes->get('id');
         $product_data = $this
             ->getDoctrine()

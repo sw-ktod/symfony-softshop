@@ -20,6 +20,7 @@ class UserController extends Controller
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function addCashAction(Request $request) {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Unable to access this page!');
         $customer_account = $this
             ->getDoctrine()
             ->getRepository(CustomerAccount::class)
@@ -49,6 +50,10 @@ class UserController extends Controller
     public function getAction(Request $request)
     {
         $user_id = $request->attributes->get('id');
+        if ($this->getUser()->getId() !== $user_id) {
+            $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Unable to access this page!');
+        }
+
         $user = $this
             ->getDoctrine()
             ->getRepository(User::class)
@@ -72,6 +77,8 @@ class UserController extends Controller
      */
     public function listAction()
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Unable to access this page!');
+
         $users = $this->getDoctrine()->getRepository(User::class)->findAll();
 
         foreach($users as $user) {

@@ -99,10 +99,6 @@ class SecurityController extends Controller
     public function logoutAction() {
     }
 
-    public function changePasswordAction() {
-
-    }
-
     /**
      * @Route("/user/{id}/edit", name="user_edit")
      * @Template()
@@ -111,6 +107,7 @@ class SecurityController extends Controller
      */
     public function editAction(Request $request)
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Unable to access this page!');
         $user_id = $request->attributes->get('id');
         $user_data = $this
             ->getDoctrine()
@@ -163,6 +160,7 @@ class SecurityController extends Controller
      */
     public function banAction(Request $request)
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Unable to access this page!');
         $user_id = $request->attributes->get('id');
 
         $user = $this->getDoctrine()->getRepository(User::class)->find($user_id);
