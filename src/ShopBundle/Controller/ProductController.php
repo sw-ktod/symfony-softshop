@@ -61,7 +61,36 @@ class ProductController extends Controller
      * @param Request $request
      */
     public function editAction(Request $request) {
+        $product_id = $request->attributes->get('id');
+        $product_data = $this
+            ->getDoctrine()
+            ->getRepository(Product::class)
+            ->find($product_id);
 
+        $form = $this->createForm(ProductType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var Product $product */
+            $product = $form->getData();
+            $product->setId($product_id);
+            $product->setCategory(
+                $this->getDoctrine()
+                    ->getRepository(Category::class)
+                    ->find($product->getCategory()->getId()));
+            $product->setVisitedCount($product_data->getVisitedCount());
+
+            $mgr = $this->getDoctrine()->getManager();
+            $mgr->merge($product);
+            $mgr->flush();
+
+        } else {
+            $form->setData($product_data);
+        }
+
+        return [
+            'form' => $form->createView()
+        ];
     }
     /**
      * @Route("/product/{id}", name="product_get")

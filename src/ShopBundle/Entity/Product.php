@@ -280,5 +280,15 @@ class Product
         $this->quantity = $quantity;
         return $this;
     }
+
+    /**
+     * @param int $id
+     * @return Product
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
 }
 
