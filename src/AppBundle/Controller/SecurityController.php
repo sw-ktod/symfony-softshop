@@ -57,9 +57,8 @@ class SecurityController extends Controller
             /** @var User $user */
             $user = $form->getData();
 
-            $encrypt = $this->get('security.password_encoder');
             $user->setPassword(
-                $encrypt->encodePassword($user, $user->getPasswordRaw())
+                md5($user->getPasswordRaw())
             );
             $user->setIsBanned(false);
 
@@ -129,12 +128,12 @@ class SecurityController extends Controller
                 ->setUsername($username)
                 ->setEmail($email)
                 ->setIsBanned(false);
-            $encrypt = $this->get('security.password_encoder');
+
             if(!$user->getPasswordRaw()) {
                 $user->setPassword($password);
             } else {
                 $user->setPassword(
-                    $encrypt->encodePassword($user, $user->getPasswordRaw())
+                    md5($user->getPasswordRaw())
                 );
             }
 
@@ -192,14 +191,13 @@ class SecurityController extends Controller
 
         if($form->isSubmitted() && $form->isValid()) {
             $user = $form->getData();
-            $encrypt = $this->get('security.password_encoder');
 
             $password = $old_password;
             if($user->getPasswordRaw()) {
-                $password = $encrypt->encodePassword($user, $user->getPasswordRaw());
+                $password = md5($user->getPasswordRaw());
             }
 
-            $current_password = $encrypt->encodePassword($user, $user->getPasswordCurrent());
+            $current_password = md5($user->getPasswordCurrent());
 
             if($old_password !== $current_password) {
                 throw new Exception('Invalid password');
