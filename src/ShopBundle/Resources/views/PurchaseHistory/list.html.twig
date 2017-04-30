@@ -3,5 +3,62 @@
 {% block title %}ShopBundle:PurchaceHistory:list{% endblock %}
 
 {% block body %}
-<h1>Welcome to the PurchaceHistory:list page</h1>
+<div class="col-md-6">
+    <legend>
+        Purchase history report
+    </legend>
+    <table class="table table-striped table-hover ">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Date of Purchase</th>
+                <th>Customer</th>
+                <th class="text-right">Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for item in purchase_history %}
+            <tr>
+                <td>
+                    <a href="{{ path('purchase_history_get', {'id': item.getId}) }}">
+                        {{ item.getId }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ path('product_get', {'id': item.getProduct.getId}) }}">
+                        {{ item.getProduct.getName }}
+                    </a>
+                </td>
+                <td>
+                    {{ item.getQuantity }}
+                </td>
+                <td>
+                    {{ item.getDateCreated.format('Y-m-d') }}
+                </td>
+                <td>
+                    <a href="{{ path('user_get', {'id': item.customerAccount.getUser.getId}) }}">
+                        {{ item.customerAccount.getUser.getUsername }}
+                    </a>
+                </td>
+                <td class="text-right">
+                    $ {{ item.getAmount }}
+                </td>
+            </tr>
+        {% endfor %}
+        <tr/>
+        <tr>
+            <td/>
+            <td/>
+            <td/>
+            <td/>
+            <td/>
+            <td class="text-right">
+                Total $ {{ total_amount }}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 {% endblock %}

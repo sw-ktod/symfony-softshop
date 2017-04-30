@@ -12,6 +12,7 @@
                 <th>Name</th>
                 <th>Surname</th>
                 <th>Email</th>
+                <th />
             </tr>
             </thead>
             <tbody>
@@ -33,6 +34,11 @@
                         </td>
                         <td>
                             {{ user.getEmail }}
+                        </td>
+                        <td>
+                            <a href="{{ path('customer_purchase_history_list', {'customer_account_id': user.getCustomerAccountId}) }}">
+                                <i class="fa fa-history" aria-hidden="true"></i>
+                            </a>
                         </td>
                     </tr>
             {% endfor %}

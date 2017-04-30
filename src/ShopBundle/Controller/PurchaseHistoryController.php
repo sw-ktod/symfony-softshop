@@ -45,7 +45,7 @@ class PurchaseHistoryController extends Controller
         $total_amount = 0;
 
         foreach($purchase_history as $item) {
-            $total_amount += $item->getSpent();
+            $total_amount += $item->getAmount();
         }
 
         return [
@@ -72,7 +72,7 @@ class PurchaseHistoryController extends Controller
         $total_amount = 0;
 
         foreach($purchase_history as $item) {
-            $total_amount += $item->getSpent();
+            $total_amount += $item->getAmount();
         }
 
         return [
