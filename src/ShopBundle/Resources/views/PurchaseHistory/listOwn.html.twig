@@ -3,17 +3,23 @@
 {% block title %}ShopBundle:PurchaceHistory:list{% endblock %}
 
 {% block body %}
-    {% if purchase_history|length < 1 %}
-        No purchase history
-    {% else %}
-        <div class="col-md-6">
+    <div class="flex justify-center">
+        <div class="col-md-10 well">
+            <legend>
+            {% if purchase_history|length < 1 %}
+                No purchase history
+            {% else %}
+                Purchase history report
+            </legend>
             <table class="table table-striped table-hover ">
                 <thead>
                 <tr>
                     <th>Id</th>
-                    <th>Product</th>
-                    <th>Quantity</th>
                     <th>Date of Purchase</th>
+                    <th>Product</th>
+                    <th class="text-right">Quantity</th>
+                    <th class="text-right">Amount</th>
+                    <th class="text-right">Total</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -25,20 +31,27 @@
                             </a>
                         </td>
                         <td>
+                            {{ item.getDateCreated.format('Y-m-d') }}
+                        </td>
+                        <td>
                             <a href="{{ path('product_get', {'id': item.getProduct.getId}) }}">
                                 {{ item.getProduct.getName }}
                             </a>
                         </td>
-                        <td>
+                        <td class="text-right">
                             {{ item.getQuantity }}
                         </td>
-                        <td>
-                            {{ item.getDateCreated.format('Y-m-d') }}
+                        <td class="text-right">
+                            $ {{ item.getAmount }}
+                        </td>
+                        <td class="text-right">
+                            $ {{ item.getAmount * item.getQuantity }}
                         </td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
         </div>
+    </div>
     {% endif %}
 {% endblock %}

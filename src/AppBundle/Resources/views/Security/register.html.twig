@@ -5,8 +5,10 @@
             <strong>Oh snap!</strong> {{ error.messageKey|trans(error.messageData, 'security') }}
         </div>
     {% endif %}
-    <div class="col-md-3 well">
-        {{ form(form) }}
+    <div class="flex justify-center">
+        <div class="col-md-6 well">
+            {{ form(form) }}
+        </div>
     </div>
 
 

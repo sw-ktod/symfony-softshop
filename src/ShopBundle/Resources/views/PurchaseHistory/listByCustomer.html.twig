@@ -19,9 +19,10 @@
                 <thead>
                 <tr>
                     <th>Id</th>
-                    <th>Product</th>
-                    <th>Quantity</th>
                     <th>Date of Purchase</th>
+                    <th>Product</th>
+                    <th class="text-right">Quantity</th>
+                    <th class="text-right">Price</th>
                     <th class="text-right">Amount</th>
                 </tr>
                 </thead>
@@ -34,23 +35,27 @@
                             </a>
                         </td>
                         <td>
+                            {{ item.getDateCreated.format('Y-m-d') }}
+                        </td>
+                        <td>
                             <a href="{{ path('product_get', {'id': item.getProduct.getId}) }}">
                                 {{ item.getProduct.getName }}
                             </a>
                         </td>
-                        <td>
+                        <td class="text-right">
                             {{ item.getQuantity }}
-                        </td>
-                        <td>
-                            {{ item.getDateCreated.format('Y-m-d') }}
                         </td>
                         <td class="text-right">
                             $ {{ item.getAmount }}
+                        </td>
+                        <td class="text-right">
+                            $ {{ item.getAmount * item.getQuantity }}
                         </td>
                     </tr>
                 {% endfor %}
                 <tr/>
                 <tr>
+                    <td/>
                     <td/>
                     <td/>
                     <td/>

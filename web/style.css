@@ -17,3 +17,11 @@ a, a:visited, a:active {
 .align-self-end {
     align-self: flex-end;
 }
+
+.width100 {
+    width: 100%;
+}
+
+.height100 {
+    height: 100%;
+}

@@ -7,22 +7,24 @@
     </div>
 {% endif %}
 
-    <div class="col-md-3 pull-right">
-        <form action="{{ path('user_check') }}" method="post">
-            <div>
-                <label for="username">Username:</label>
-                <input class="form-control" type="text" id="username" name="_username" value="{{ last_username }}" />
-            </div>
+    <div class="flex justify-center">
+        <div class="col-md-4 well">
+            <form action="{{ path('user_check') }}" method="post">
+                <div>
+                    <label for="username">Username:</label>
+                    <input class="form-control" type="text" id="username" name="_username" value="{{ last_username }}" />
+                </div>
 
-            <div>
-                <label for="password">Password:</label>
-                <input class="form-control" type="password" id="password" name="_password" />
-            </div>
+                <div>
+                    <label for="password">Password:</label>
+                    <input class="form-control" type="password" id="password" name="_password" />
+                </div>
 
-            <div style="margin-top: 10px;" class="pull-right">
-                <button class="btn btn-primary" type="submit">Login</button>
-            </div>
-        </form>
+                <div style="margin-top: 10px;" class="pull-right">
+                    <button class="btn btn-primary" type="submit">Login</button>
+                </div>
+            </form>
+        </div>
     </div>
 
 {% endblock %}

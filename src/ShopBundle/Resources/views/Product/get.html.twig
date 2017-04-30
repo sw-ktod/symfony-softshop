@@ -2,43 +2,50 @@
 {% block body %}
 
 <div class="flex justify-center">
-    <div class="col-md-5 well">
-        <img class="img-thumbnail" src="{{ uploads_route ~ product.getImageUrl}}" alt="">
-    </div>
-    <div class="col-md-7">
-        <div class="col-md-10">
-            <h2>
-                {{ product.getName }}
-            </h2>
-            <p>
-                {{ product.getDescription }}
-            </p>
-
-            <p class="text-right">
-                Price: $ {{ product.getPrice }}
-            </p>
-
-            <small class="pull-right">
-                Available {{ product.getQuantity }}
-            </small>
+    <div class="col-md-5">
+        <div class="col-md-12 well">
+            <img class="img-thumbnail" src="{{ uploads_route ~ product.getImageUrl}}" alt="">
         </div>
-        {% if is_granted('ROLE_ADMIN') %}
-            <div class="col-md-2 text-right">
-                <a href="{{ path('product_edit', {'id': product.getId}) }}">Edit</a>
+    </div>
+    <div class="col-md-5">
+        <div class="col-md-12">
+            <div class="col-md-8">
+                <h2>
+                    {{ product.getName }}
+                </h2>
+                <p>
+                    {{ product.getDescription }}
+                </p>
             </div>
-            <div class="col-md-2 text-right">
-                <a href="{{ path('product_delete', {'id': product.getId}) }}">Delete</a>
+            {% if is_granted('ROLE_ADMIN') %}
+                <div class="col-md-4">
+                    <div class="col-md-12 text-center">
+                        <a class="btn btn-default" href="{{ path('product_edit', {'id': product.getId}) }}">Edit</a>
+                    </div>
+                    <div class="col-md-12 text-center">
+                        <a class="btn btn-default" href="{{ path('product_delete', {'id': product.getId}) }}">Delete</a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        <div class="col-md-12">
+            <div class="col-md-6">
+                <p>
+                    Price: $ {{ product.getPrice }}
+                </p>
             </div>
-        {% endif %}
-        <div class="col-md-8 text-right pull-right">
-            <form method="post" action="{{ path('cart_add') }}">
-                <input class="hide" type="text" name="product_id" value="{{ product.getId }}">
-                <label for="quantity">Quantity</label>
-                <input type="number" id="quantity" name="quantity" value="1" min="1" max={{ product.getQuantity }}>
-                <button class="btn btn-default pull-right" type="submit">
-                    Add to cart
-                </button>
-            </form>
+        </div>
+        <div class="col-md-12">
+            <div class="col-md-6 text-right pull-right">
+                <form method="post" action="{{ path('cart_add') }}">
+                    <input class="hide" type="text" name="product_id" value="{{ product.getId }}">
+                    <label for="quantity">Available {{ product.getQuantity }}</label>
+                    <input class="form-control" type="number" id="quantity" name="quantity" value="1" min="1" max={{ product.getQuantity }}>
+                    <button class="btn btn-primary pull-right" type="submit">
+                        Add to cart
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 </div>

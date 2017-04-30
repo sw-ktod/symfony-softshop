@@ -3,20 +3,26 @@
 {% block title %}ShopBundle:Cart:get{% endblock %}
 
 {% block body %}
-    <div class="col-md-6">
-        <table class="table table-striped table-hover ">
-            <thead>
-            <tr>
-                <th>Id</th>
-                <th>Username</th>
-                <th>Name</th>
-                <th>Surname</th>
-                <th>Email</th>
-                <th />
-            </tr>
-            </thead>
-            <tbody>
-            {% for user in users %}
+    <div class="flex justify-center">
+        <div class="col-md-10 well">
+            <legend>
+                User list
+            </legend>
+            <table class="table table-striped table-hover ">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Username</th>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Roles</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Activity</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user in users %}
                     <tr>
                         <td>
                             {{ user.getId }}
@@ -24,7 +30,7 @@
                         <td>
                             {% if is_granted('ROLE_ADMIN') %}
                                 <a href={{ path('user_get', {'id': user.getId}) }}>
-                                    {{ user.getId }}
+                                    {{ user.getUsername }}
                                 </a>
                             {% else %}
                                 {{ user.getName }}
@@ -37,7 +43,16 @@
                             {{ user.getSurname}}
                         </td>
                         <td>
+                            {% for role in user.getRoles %}
+                                {{ role.name }}
+                                {% if not loop.last %},{% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>
                             {{ user.getEmail }}
+                        </td>
+                        <td>
+                            {{ user.getIsBanned ? 'BANNED' : 'Active' }}
                         </td>
                         <td>
                             {% if is_granted('ROLE_ADMIN') %}
@@ -47,8 +62,10 @@
                             {% endif %}
                         </td>
                     </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
     </div>
 {% endblock %}
