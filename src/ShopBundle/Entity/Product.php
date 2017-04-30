@@ -29,7 +29,6 @@ class Product
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
-     * @NotBlank()
      */
     private $name;
 
@@ -44,8 +43,6 @@ class Product
      * @var string
      *
      * @ORM\Column(name="price", type="decimal", precision=10, scale=0)
-     * @GreaterThanOrEqual(1)
-     * @NotBlank()
      */
     private $price;
 
@@ -54,14 +51,12 @@ class Product
      *
      * @ManyToOne(targetEntity="ShopBundle\Entity\Category")
      * @JoinColumn(name="category_id", referencedColumnName="id")
-     * @NotBlank()
      */
     private $category;
 
     /**
      * @var int
      * @ORM\Column(name="category_id", type="integer")
-     * @NotBlank()
      */
     private $category_id;
 
@@ -84,8 +79,6 @@ class Product
     /**
      * @var int
      * @ORM\Column(name="quantity", type="integer")
-     * @GreaterThanOrEqual(0)
-     * @NotBlank()
      */
     private $quantity;
 
