@@ -43,6 +43,13 @@ class PurchaseHistory
     private $product_id;
 
     /**
+     * @var Product
+     * @ORM\ManyToOne(targetEntity="ShopBundle\Entity\Product")
+     * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
+     */
+    private $product;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="quantity", type="integer")
@@ -203,6 +210,25 @@ class PurchaseHistory
     public function setSpent($spent)
     {
         $this->spent = $spent;
+
+        return $this;
+    }
+
+    /**
+     * @return Product
+     */
+    public function getProduct()
+    {
+        return $this->product;
+    }
+
+    /**
+     * @param Product $product
+     * @return $this
+     */
+    public function setProduct($product)
+    {
+        $this->product = $product;
 
         return $this;
     }
