@@ -4,12 +4,13 @@ namespace ShopBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use ShopBundle\Entity\CustomerAccount;
 use ShopBundle\Entity\Product;
+use ShopBundle\Entity\PurchaseHistory;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class CartController extends Controller
 {
@@ -32,9 +33,18 @@ class CartController extends Controller
             $total += $item['product']->getPrice() * $item['quantity'];
         }
 
+        $user_id = $this
+            ->getUser()
+            ->getId();
+        $customer_account = $this
+            ->getDoctrine()
+            ->getRepository(CustomerAccount::class)
+            ->findOneBy(['user_id' => $user_id]);
+
         return [
             'cart' => $cart,
-            'total' => $total
+            'total' => $total,
+            'available_balance' => $customer_account->getBalance()
         ];
     }
 
@@ -48,10 +58,9 @@ class CartController extends Controller
     {
         $cart = $this->get('session')->get('cart');
         $quantity = $request->request->get('quantity');
-        $refererRoute = $request->headers->get('referer');
 
         if ($quantity < 1) {
-            return $this->redirect($refererRoute);
+            throw new Exception('Invalid quantity');
         }
 
         if(!isset($cart) || !is_array($cart)) {
@@ -63,9 +72,8 @@ class CartController extends Controller
             ->find($request->request->get('product_id'));
         $quantity = $request->request->get('quantity');
 
-
         if(!$product || $product->getQuantity() < $quantity) {
-            return $this->redirect($refererRoute);
+            throw new Exception('Insufficient quantity');
         }
 
         $cart[$product->getId()] = [
@@ -75,12 +83,14 @@ class CartController extends Controller
 
         $this->get('session')->set('cart', $cart);
 
-        return $this->redirect($refererRoute);
+        return $this->redirectToRoute('cart_get');
     }
 
     /**
      * @Route("/cart/remove", name="cart_remove")
      * @Method("POST")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function removeAction(Request $request)
     {
@@ -93,30 +103,92 @@ class CartController extends Controller
         unset($cart[$request->request->get('product_id')]);
         $this->get('session')->set('cart', $cart);
 
-        $refererRoute = $request->headers->get('referer');
+        $referrerRoute = $request->headers->get('referer');
 
-        return $this->redirect($refererRoute);
+        return $this->redirect($referrerRoute);
     }
 
     /**
      * @Route("/cart/reset", name="cart_reset")
-     * @Method("POST")
+     * @Method("GET")
      */
     public function resetAction()
     {
         $this->get('session')->set('cart', []);
 
-//        $this->getRequest()->headers->get('referer');
+        return $this->redirectToRoute('cart_get');
     }
 
     /**
      * @Route("/cart/checkout", name="cart_checkout")
      * @Method("GET")
      * @Template()
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function checkoutAction()
+    public function checkoutAction(Request $request)
     {
-        return [];
-    }
+        $cart = $this->get('session')->get('cart');
 
+        if(!isset($cart) || !is_array($cart)) {
+            throw new Exception('Cart is empty');
+        }
+        $total = 0;
+        foreach($cart as $item) {
+            $total += $item['product']->getPrice() * $item['quantity'];
+        }
+
+        $user_id = $this->getUser()->getId();
+        $customer_account = $this->getDoctrine()->getRepository(CustomerAccount::class)->findOneBy(['user_id' => $user_id]);
+
+        $available_balance = $customer_account->getBalance();
+
+        if($total > $available_balance) {
+            throw new Exception('Insufficient amount');
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $product_repository = $this->getDoctrine()->getRepository(Product::class);
+
+        $em->getConnection()->beginTransaction();
+        try {
+            $purchase_date = date_create();
+            foreach($cart as $item) {
+                $product = $product_repository->findOneBy(['id' => $item['product']->getId()]);
+
+                if ($product->getQuantity() < $item['quantity']) {
+                    throw new Exception('Insufficient product quantity');
+                }
+
+                $product->setQuantity($product->getQuantity() - $item['quantity']);
+                $em->merge($product);
+
+                $purchase_history = new PurchaseHistory();
+                $purchase_history
+                    ->setQuantity($item['quantity'])
+                    ->setCustomerAccount($customer_account)
+                    ->setCustomerId($customer_account->getId())
+                    ->setProductId($product->getId())
+                    ->setDateCreated($purchase_date)
+                    ->setAmount($product->getPrice());
+
+                $em->persist($purchase_history);
+            }
+            $customer_account->takeCash($total);
+            $em->merge($customer_account);
+
+            $em->flush();
+
+            $this->get('session')->set('cart', []);
+
+            $em->getConnection()->commit();
+        } catch(Exception $e) {
+            $em->getConnection()->rollback();
+        }
+
+
+        $referrerRoute = $request->headers->get('referer');
+
+        return $this->redirect($referrerRoute);
+    }
 }

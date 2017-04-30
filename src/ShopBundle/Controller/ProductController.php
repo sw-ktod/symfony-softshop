@@ -70,6 +70,8 @@ class ProductController extends Controller
             ->find($product_id);
 
         $form = $this->createForm(ProductType::class);
+        $form->setData($product_data);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -86,10 +88,8 @@ class ProductController extends Controller
             $mgr->merge($product);
             $mgr->flush();
 
-        } else {
-            $form->setData($product_data);
+            return $this->redirectToRoute('product_get', ['id' => $product->getId()]);
         }
-
         return [
             'form' => $form->createView()
         ];
