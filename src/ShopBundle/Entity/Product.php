@@ -5,6 +5,8 @@ namespace ShopBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * Product
@@ -27,13 +29,14 @@ class Product
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @NotBlank()
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="string", length=255)
+     * @ORM\Column(name="description", type="string", length=255, nullable=true)
      */
     private $description;
 
@@ -41,6 +44,8 @@ class Product
      * @var string
      *
      * @ORM\Column(name="price", type="decimal", precision=10, scale=0)
+     * @GreaterThanOrEqual(1)
+     * @NotBlank()
      */
     private $price;
 
@@ -49,13 +54,14 @@ class Product
      *
      * @ManyToOne(targetEntity="ShopBundle\Entity\Category")
      * @JoinColumn(name="category_id", referencedColumnName="id")
-     *
+     * @NotBlank()
      */
     private $category;
 
     /**
      * @var int
      * @ORM\Column(name="category_id", type="integer")
+     * @NotBlank()
      */
     private $category_id;
 
@@ -69,7 +75,7 @@ class Product
     /**
      * @var string
      *
-     * @ORM\Column(name="image_url", type="string", length=999)
+     * @ORM\Column(name="image_url", type="string", length=999, nullable=true)
      */
     private $image_url;
 
@@ -78,6 +84,8 @@ class Product
     /**
      * @var int
      * @ORM\Column(name="quantity", type="integer")
+     * @GreaterThanOrEqual(0)
+     * @NotBlank()
      */
     private $quantity;
 

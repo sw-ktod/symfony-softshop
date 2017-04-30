@@ -3,6 +3,8 @@
 namespace ShopBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * PurchaceHistory
@@ -25,6 +27,7 @@ class PurchaseHistory
      * @var int
      *
      * @ORM\Column(name="customer_account_id", type="integer")
+     * @NotBlank()
      */
     private $customer_account_id;
 
@@ -32,6 +35,7 @@ class PurchaseHistory
      * @var CustomerAccount
      * @ORM\ManyToOne(targetEntity="ShopBundle\Entity\CustomerAccount")
      * @ORM\JoinColumn(name="customer_account_id", referencedColumnName="id")
+     * @NotBlank()
      */
     private $customer_account;
 
@@ -39,6 +43,7 @@ class PurchaseHistory
      * @var int
      *
      * @ORM\Column(name="product_id", type="integer")
+     * @NotBlank()
      */
     private $product_id;
 
@@ -53,6 +58,8 @@ class PurchaseHistory
      * @var int
      *
      * @ORM\Column(name="quantity", type="integer")
+     * @NotBlank()
+     * @GreaterThanOrEqual(0)
      */
     private $quantity;
 
@@ -60,7 +67,7 @@ class PurchaseHistory
      * @var string
      * @ORM\Column(name="spent", type="decimal", precision=10, scale=0)
      */
-    private $spent;
+    private $amount;
 
     /**
      * @var \DateTime
@@ -198,18 +205,18 @@ class PurchaseHistory
     /**
      * @return string
      */
-    public function getSpent()
+    public function getAmount()
     {
-        return $this->spent;
+        return $this->amount;
     }
 
     /**
-     * @param string $spent
+     * @param string $amount
      * @return $this
      */
-    public function setSpent($spent)
+    public function setAmount($amount)
     {
-        $this->spent = $spent;
+        $this->amount = $amount;
 
         return $this;
     }
