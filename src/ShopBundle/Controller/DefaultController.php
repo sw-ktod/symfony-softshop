@@ -16,12 +16,8 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        $categories = $this->getDoctrine()->getRepository(Category::class)->findAll();
-        $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
-
         return [
-            'categories' => $categories,
-            'products' => $products
+          'user' => $this->getUser()
         ];
     }
 }

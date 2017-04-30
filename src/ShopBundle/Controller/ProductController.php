@@ -34,7 +34,8 @@ class ProductController extends Controller
                     ->getRepository(Category::class)
                     ->find($product->getCategory()->getId())
             );
-            $product->setVisitedCount(0);
+            $product->setVisitedCount(0)
+                ->setIsDeleted(false);
 
             $file = $product->getImage();
             // Generate a unique name for the file before saving it
@@ -162,14 +163,15 @@ class ProductController extends Controller
         $categoryRepository = $this->getDoctrine()->getRepository(Category::class);
         if (!$query->count()) {
             return [
-                'products' => $productRepository->findAll(),
+                'products' => $productRepository->findBy(['is_deleted' => false]),
                 'categories' => $categoryRepository->findAll(),
                 'active_id' => null
             ];
         }
 
         $queryParams = [
-            'category_id' => $query->get('category_id')
+            'category_id' => $query->get('category_id'),
+            'is_deleted' => false
         ];
 
         return [
@@ -177,5 +179,31 @@ class ProductController extends Controller
             'categories' => $categoryRepository->findAll(),
             'active_id' => $query->get('category_id')
         ];
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @Route("/product/{id}/delete", name="product_delete")
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function deleteAction(Request $request) {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Unable to access this page!');
+
+        $product_id = $request->attributes->get('id');
+        $product = $this
+            ->getDoctrine()
+            ->getRepository(Product::class)
+            ->find($product_id)
+            ->setIsDeleted(true);
+
+        $em = $this
+            ->getDoctrine()
+            ->getManager();
+
+        $em->merge($product);
+        $em->flush();
+
+        return $this->redirectToRoute('product_list');
     }
 }

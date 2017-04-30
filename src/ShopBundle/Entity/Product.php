@@ -83,6 +83,12 @@ class Product
     private $quantity;
 
     /**
+     * @var bool
+     * @ORM\Column(name="is_deleted", type="binary")
+     */
+    private $is_deleted;
+
+    /**
      * Get id
      *
      * @return int
@@ -289,6 +295,25 @@ class Product
     public function setId($id)
     {
         $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isIsDeleted()
+    {
+        return $this->is_deleted;
+    }
+
+    /**
+     * @param boolean $is_deleted
+     * @return $this
+     */
+    public function setIsDeleted($is_deleted)
+    {
+        $this->is_deleted = $is_deleted;
+
         return $this;
     }
 }
