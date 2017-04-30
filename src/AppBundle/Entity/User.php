@@ -204,6 +204,7 @@ class User implements AdvancedUserInterface
 
     public function setRoles($roles) {
         $this->roles = $roles;
+        return $this;
     }
 
     public function addRole($role) {
