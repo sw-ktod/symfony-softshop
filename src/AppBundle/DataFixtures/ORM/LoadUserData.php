@@ -26,6 +26,12 @@ class LoadUserData implements FixtureInterface, ContainerAwareInterface
         $userSuperAdmin = new User();
         $userSuperAdmin->setUsername('sa');
         $userSuperAdmin->setEmail('sa@sa.sa');
+        $userSuperAdmin->setAddress('test address');
+        $userSuperAdmin->setDateOfBirth(date_create());
+        $userSuperAdmin->setIsBanned(false);
+        $userSuperAdmin->setName('super');
+        $userSuperAdmin->setSurname('admin');
+
         $encrypt = $this->container->get('security.password_encoder');
         $userSuperAdmin->setPassword($encrypt->encodePassword($userSuperAdmin, '123'));
 
