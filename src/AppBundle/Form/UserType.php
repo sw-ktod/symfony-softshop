@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -23,7 +24,7 @@ class UserType extends AbstractType
             ->add('username', TextType::class, [
                 'label' => 'Username',
                 'attr' => [
-                    'class' => 'form-control',
+                    'class' => 'form-control pull-left',
                     'id' => 'username',
                     'type' => 'text'
                 ]
@@ -31,8 +32,40 @@ class UserType extends AbstractType
             ->add('email', EmailType::class, [
                 'label' => 'Email',
                 'attr' => [
-                    'class' => 'form-control',
+                    'class' => 'form-control pull-left',
                     'id' => 'email',
+                    'type' => 'text'
+                ]
+            ])
+            ->add('Name', TextType::class, [
+                'label' => 'Name',
+                'attr' => [
+                    'class' => 'form-control',
+                    'id' => 'name',
+                    'type' => 'text'
+                ]
+            ])
+            ->add('surname', TextType::class, [
+                'label' => 'Surname',
+                'attr' => [
+                    'class' => 'form-control',
+                    'id' => 'surname',
+                    'type' => 'text'
+                ]
+            ])
+            ->add('date_of_birth', DateType::class, [
+                'label' => 'Date of Birth',
+                'attr' => [
+                    'class' => 'form-control',
+                    'id' => 'date_of_birth',
+                    'type' => 'date',
+                ]
+            ])
+            ->add('address', TextType::class, [
+                'label' => 'Address',
+                'attr' => [
+                    'class' => 'form-control',
+                    'id' => 'address',
                     'type' => 'text'
                 ]
             ])

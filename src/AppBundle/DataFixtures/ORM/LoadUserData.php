@@ -34,7 +34,7 @@ class LoadUserData implements FixtureInterface, ContainerAwareInterface
         $customerAccount = new CustomerAccount();
         $customerAccount->setUser($userSuperAdmin);
         $customerAccount->setUserId($userSuperAdmin->getId());
-        $customerAccount->setCashAmount(1000);
+        $customerAccount->setBalance(1000);
 
         $manager->persist($customerAccount);
         $manager->flush();
@@ -47,4 +47,5 @@ class LoadUserData implements FixtureInterface, ContainerAwareInterface
         return 1;
     }
 }
+
 

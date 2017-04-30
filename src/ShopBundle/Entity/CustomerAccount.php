@@ -37,9 +37,9 @@ class CustomerAccount
 
     /**
      * @var string
-     * @ORM\Column(name="cash_amount", type="decimal", precision=10, scale=0)
+     * @ORM\Column(name="balance", type="decimal", precision=10, scale=0)
      */
-    private $cash_amount;
+    private $balance;
 
     /**
      * Get id
@@ -93,18 +93,18 @@ class CustomerAccount
     /**
      * @return string
      */
-    public function getCashAmount()
+    public function getBalance()
     {
-        return $this->cash_amount;
+        return $this->balance;
     }
 
     /**
-     * @param string $cash_amount
+     * @param string $balance
      * @return $this
      */
-    public function setCashAmount($cash_amount)
+    public function setBalance($balance)
     {
-        $this->cash_amount = $cash_amount;
+        $this->balance = $balance;
 
         return $this;
     }
@@ -114,7 +114,7 @@ class CustomerAccount
      * @return $this
      */
     public function addCash($amount) {
-        $this->cash_amount += $amount;
+        $this->balance += $amount;
 
         return $this;
     }
@@ -125,11 +125,11 @@ class CustomerAccount
      */
     public function takeCash($amount) {
 
-        if ($this->cash_amount - $amount < 0) {
+        if ($this->balance - $amount < 0) {
             throw new Exception('Insufficient amount');
         }
 
-        $this->cash_amount -= $amount;
+        $this->balance -= $amount;
 
         return $this;
     }

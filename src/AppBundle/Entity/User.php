@@ -55,6 +55,39 @@ class User implements UserInterface
     private $password_raw;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255)
+     */
+    private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="surname", type="string", length=255)
+     */
+    private $surname;
+
+    /**
+     * @var string
+     * @ORM\Column(name="date_of_birth", type="date")
+     */
+    private $date_of_birth;
+
+    /**
+     * @var string
+     * @Assert\NotBlank()
+     * @ORM\Column(name="address", type="string", length=255)
+     */
+    private $address;
+
+    /**
+     * @var bool
+     * @ORM\Column(name="is_banned", type="binary")
+     */
+    private $is_banned;
+
+    /**
      * Get id
      *
      * @return int
@@ -193,6 +226,108 @@ class User implements UserInterface
     public function setPasswordRaw($password_raw)
     {
         $this->password_raw = $password_raw;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
+    /**
+     * @param string $address
+     * @return $this
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     * @return $this
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSurname()
+    {
+        return $this->surname;
+    }
+
+    /**
+     * @param string $surname
+     */
+    public function setSurname($surname)
+    {
+        $this->surname = $surname;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDateOfBirth()
+    {
+        return $this->date_of_birth;
+    }
+
+    /**
+     * @param string $date_of_birth
+     * @return $this
+     */
+    public function setDateOfBirth($date_of_birth)
+    {
+        $this->date_of_birth = $date_of_birth;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIsBanned()
+    {
+        return $this->is_banned;
+    }
+
+    /**
+     * @param $is_banned
+     * @return $this
+     */
+    public function setIsBanned($is_banned)
+    {
+        $this->is_banned = $is_banned;
+
+        return $this;
+    }
+
+    /**
+     * @param int $id
+     * @return User
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
     }
 }
 

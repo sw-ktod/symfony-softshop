@@ -59,6 +59,7 @@ class SecurityController extends Controller
             $user->setPassword(
                 $encrypt->encodePassword($user, $user->getPasswordRaw())
             );
+            $user->setIsBanned(false);
 
             $em = $this->getDoctrine()->getManager();
 
@@ -70,7 +71,7 @@ class SecurityController extends Controller
                 $customerAccount
                     ->setUserId($user->getId())
                     ->setUser($user)
-                    ->setCashAmount(1000);
+                    ->setBalance(1000);
                 $em->persist($customerAccount);
 
                 $em->flush();
@@ -94,6 +95,68 @@ class SecurityController extends Controller
      * @Route("/logout", name="user_logout")
      */
     public function logoutAction() {
+    }
+
+    public function changePasswordAction() {
+
+    }
+
+    /**
+     * @Route("/user/{id}/edit", name="user_edit")
+     * @Template()
+     * @param Request $request
+     * @return array
+     */
+    public function editAction(Request $request)
+    {
+        $user_id = $request->attributes->get('id');
+
+        $form = $this->createForm(UserType::class);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $user = $form->getData();
+            $user->setId($user_id)
+                ->setIsBanned(false);
+            $encrypt = $this->get('security.password_encoder');
+            $user->setPassword(
+                $encrypt->encodePassword($user, $user->getPasswordRaw())
+            );
+
+            $em = $this
+                ->getDoctrine()
+                ->getManager();
+
+            $em->merge($user);
+            $em->flush();
+        } else {
+            $user_data = $this
+                ->getDoctrine()
+                ->getRepository(User::class)
+                ->find($user_id);
+
+            $form->setData($user_data);
+        }
+
+        return [
+            'form' => $form->createView()
+        ];
+    }
+
+
+    /**
+     * @Route("/user/{id}/ban", name="user_ban")
+     * @param Request $request
+     */
+    public function banAction(Request $request)
+    {
+        $user_id = $request->attributes->get('id');
+
+        $user = $this->getDoctrine()->getRepository(User::class)->find($user_id);
+        $user->setIsBanned(true);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($user);
+        $em->flush();
     }
 
 }
