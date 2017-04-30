@@ -23,9 +23,6 @@ class LoadUserData implements FixtureInterface, ContainerAwareInterface
 
     public function load(ObjectManager $manager)
     {
-
-        $roles = $manager->getRepository('ShopBundle:Role')->findAll();
-
         $userSuperAdmin = new User();
         $userSuperAdmin->setUsername('sa');
         $userSuperAdmin->setEmail('sa@sa.sa');
@@ -34,9 +31,9 @@ class LoadUserData implements FixtureInterface, ContainerAwareInterface
         $userSuperAdmin->setIsBanned(false);
         $userSuperAdmin->setName('super');
         $userSuperAdmin->setSurname('admin');
-        $userSuperAdmin->setRoles($roles);
 
-        $userSuperAdmin->setPassword(md5('123'));
+        $encrypt = $this->container->get('security.password_encoder');
+        $userSuperAdmin->setPassword($encrypt->encodePassword($userSuperAdmin, '123'));
 
         $manager->persist($userSuperAdmin);
 
@@ -53,7 +50,7 @@ class LoadUserData implements FixtureInterface, ContainerAwareInterface
     {
         // the order in which fixtures will be loaded
         // the lower the number, the sooner that this fixture is loaded
-        return 2;
+        return 1;
     }
 }
 

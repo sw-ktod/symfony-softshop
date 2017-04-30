@@ -169,7 +169,7 @@ class ProductController extends Controller
         }
 
         $queryParams = [
-            'category_id' => $query->get('category_id'),
+            'category_id' => $query->get('category_id')
         ];
 
         return [

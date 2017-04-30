@@ -57,8 +57,9 @@ class SecurityController extends Controller
             /** @var User $user */
             $user = $form->getData();
 
+            $encrypt = $this->get('security.password_encoder');
             $user->setPassword(
-                md5($user->getPasswordRaw())
+                $encrypt->encodePassword($user, $user->getPasswordRaw())
             );
             $user->setIsBanned(false);
 
@@ -128,12 +129,12 @@ class SecurityController extends Controller
                 ->setUsername($username)
                 ->setEmail($email)
                 ->setIsBanned(false);
-
+            $encrypt = $this->get('security.password_encoder');
             if(!$user->getPasswordRaw()) {
                 $user->setPassword($password);
             } else {
                 $user->setPassword(
-                    md5($user->getPasswordRaw())
+                    $encrypt->encodePassword($user, $user->getPasswordRaw())
                 );
             }
 
@@ -182,25 +183,23 @@ class SecurityController extends Controller
         $username = $user_data->getUsername();
         $old_password = $user_data->getPassword();
         $email = $user_data->getEmail();
-
         $form = $this->createForm(UserType::class, $user_data, [
             'action' => 'self_edit'
         ]);
-
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
             $user = $form->getData();
+            $encrypt = $this->get('security.password_encoder');
+
+            $current_password = $encrypt->encodePassword($this->getUser(), $user->getPasswordCurrent());
+            if($old_password !== $current_password) {
+                throw new Exception('Invalid password');
+            }
 
             $password = $old_password;
             if($user->getPasswordRaw()) {
-                $password = md5($user->getPasswordRaw());
-            }
-
-            $current_password = md5($user->getPasswordCurrent());
-
-            if($old_password !== $current_password) {
-                throw new Exception('Invalid password');
+                $password = $encrypt->encodePassword($this->getUser(), $user->getPasswordRaw());
             }
 
             $user->setId($user_data->getId())
