@@ -29,7 +29,7 @@
             <form method="post" action="{{ path('cart_add') }}">
                 <input class="hide" type="text" name="product_id" value="{{ product.getId }}">
                 <label for="quantity">Quantity</label>
-                <input type="number" id="quantity" name="quantity" value="1" min="1">
+                <input type="number" id="quantity" name="quantity" value="1" min="1" max={{ product.getQuantity }}>
                 <button class="btn btn-default pull-right" type="submit">
                     Add to cart
                 </button>
