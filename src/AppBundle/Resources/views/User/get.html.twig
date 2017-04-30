@@ -4,6 +4,9 @@
 
 {% block body %}
     <div class="col-md-6">
+        {% if user.getIsBanned %}
+            <h1>BANNED</h1>
+        {% endif %}
         <h3>Username: <span class="text-right">{{ user.getUsername }}</span></h3>
         <p>Email: {{ user.getEmail }}</p>
         <p>Name: {{ user.getName ~ ' ' ~ user.getSurname }}</p>
@@ -27,9 +30,11 @@
             <div>
                 <a class="btn btn-default" href="{{ path('user_edit', {'id': user.getId}) }}">Edit user</a>
             </div>
-            <div>
-                <a class="btn btn-default" href="{{ path('user_ban', {'id': user.getId}) }}">Ban user</a>
-            </div>
+            {% if not user.getIsBanned %}
+                <div>
+                    <a class="btn btn-default" href="{{ path('user_ban', {'id': user.getId}) }}">Ban user</a>
+                </div>
+            {% endif %}
         {% endif %}
     </div>
 {% endblock %}

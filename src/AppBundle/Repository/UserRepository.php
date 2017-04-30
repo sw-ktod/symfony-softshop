@@ -25,7 +25,8 @@ class UserRepository extends \Doctrine\ORM\EntityRepository implements UserLoade
     public function loadUserByUsername($username)
     {
         return $this->findOneBy([
-            'username' => $username
+            'username' => $username,
+            'is_banned' => false
         ]);
     }
 }

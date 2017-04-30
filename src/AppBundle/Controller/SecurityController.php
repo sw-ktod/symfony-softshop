@@ -157,6 +157,7 @@ class SecurityController extends Controller
     /**
      * @Route("/user/{id}/ban", name="user_ban")
      * @param Request $request
+     * @return RedirectResponse
      */
     public function banAction(Request $request)
     {
@@ -169,6 +170,8 @@ class SecurityController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->persist($user);
         $em->flush();
+
+        return $this->redirectToRoute('user_get', ['id' => $user->getId()]);
     }
 
     /**
