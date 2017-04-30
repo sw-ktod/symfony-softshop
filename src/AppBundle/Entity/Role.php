@@ -30,6 +30,12 @@ class Role implements RoleInterface
     private $name;
 
     /**
+     * @var array
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\User", mappedBy="roles")
+     */
+    private $users;
+
+    /**
      * Get id
      *
      * @return int
@@ -51,7 +57,7 @@ class Role implements RoleInterface
      */
     public function getRole()
     {
-        // TODO: Implement getRole() method.
+        return $this->name;
     }
 
     /**
@@ -70,6 +76,24 @@ class Role implements RoleInterface
     {
         $this->name = $name;
 
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUsers()
+    {
+        return $this->users;
+    }
+
+    /**
+     * @param mixed $users
+     * @return $this
+     */
+    public function setUsers($users)
+    {
+        $this->users = $users;
         return $this;
     }
 }

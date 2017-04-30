@@ -84,7 +84,7 @@ class Product
 
     /**
      * @var bool
-     * @ORM\Column(name="is_deleted", type="binary")
+     * @ORM\Column(name="is_deleted", type="boolean")
      */
     private $is_deleted;
 
@@ -282,7 +282,7 @@ class Product
      * @param mixed $quantity
      * @return $this
      */
-    public function setQuantity($quantity)
+    public function setQuantity($quantity = 1)
     {
         $this->quantity = $quantity;
         return $this;
@@ -301,7 +301,7 @@ class Product
     /**
      * @return boolean
      */
-    public function isIsDeleted()
+    public function isDeleted()
     {
         return $this->is_deleted;
     }
@@ -310,7 +310,7 @@ class Product
      * @param boolean $is_deleted
      * @return $this
      */
-    public function setIsDeleted($is_deleted)
+    public function setIsDeleted($is_deleted = false)
     {
         $this->is_deleted = $is_deleted;
 

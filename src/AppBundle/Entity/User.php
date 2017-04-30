@@ -2,7 +2,9 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinTable;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -82,7 +84,7 @@ class User implements AdvancedUserInterface
 
     /**
      * @var bool
-     * @ORM\Column(name="is_banned", type="binary")
+     * @ORM\Column(name="is_banned", type="boolean")
      */
     private $is_banned;
 
@@ -92,7 +94,9 @@ class User implements AdvancedUserInterface
     private $customer_account_id;
 
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Role", inversedBy="users", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Role", inversedBy="users")
+     * @JoinTable("user_role")
+     *
      */
     private $roles;
 
@@ -195,13 +199,11 @@ class User implements AdvancedUserInterface
      */
     public function getRoles()
     {
-        return ['ROLE_USER', 'ROLE_ADMIN'];
-
-//        return $this->roles;
+        return $this->roles->toArray();
     }
 
     public function setRoles($roles) {
-        $this->roles = $roles->toArray();
+        $this->roles = $roles;
     }
 
     public function addRole($role) {
@@ -415,7 +417,7 @@ class User implements AdvancedUserInterface
      */
     public function isAccountNonLocked()
     {
-        return $this->is_banned;
+        return true;
     }
 
     /**
@@ -446,6 +448,14 @@ class User implements AdvancedUserInterface
     public function isEnabled()
     {
         return true;
+    }
+
+    /**
+     * User constructor.
+     */
+    public function __construct()
+    {
+        $this->roles = new ArrayCollection();
     }
 }
 
