@@ -19,14 +19,16 @@
             {% for user in users %}
                     <tr>
                         <td>
-                            <a href={{ path('user_get', {'id': user.getId}) }}>
-                                {{ user.getId }}
-                            </a>
+                            {{ user.getId }}
                         </td>
                         <td>
-                            <a href="{{ path('user_get', {'id': user.getId}) }}">
-                                {{ user.getUsername }}
-                            </a>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a href={{ path('user_get', {'id': user.getId}) }}>
+                                    {{ user.getId }}
+                                </a>
+                            {% else %}
+                                {{ user.getName }}
+                            {% endif %}
                         </td>
                         <td>
                             {{ user.getName }}
@@ -38,9 +40,11 @@
                             {{ user.getEmail }}
                         </td>
                         <td>
-                            <a href="{{ path('customer_purchase_history_list', {'customer_account_id': user.getCustomerAccountId}) }}">
-                                <i class="fa fa-history" aria-hidden="true"></i>
-                            </a>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a href="{{ path('customer_purchase_history_list', {'customer_account_id': user.getCustomerAccountId}) }}">
+                                    <i class="fa fa-history" aria-hidden="true"></i>
+                                </a>
+                            {% endif %}
                         </td>
                     </tr>
             {% endfor %}

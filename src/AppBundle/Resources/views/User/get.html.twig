@@ -20,15 +20,16 @@
         </div>
     </div>
     <div class="col-md-3 text-right">
-
-        <div>
-            <a class="btn btn-default" href="{{ path('customer_purchase_history_list', {'customer_account_id': customer_account.getId}) }}">Purchase History</a>
-        </div>
-        <div>
-            <a class="btn btn-default" href="{{ path('user_edit', {'id': user.getId}) }}">Edit user</a>
-        </div>
-        <div>
-            <a class="btn btn-default" href="{{ path('user_ban', {'id': user.getId}) }}">Ban user</a>
-        </div>
+        {% if is_granted('ROLE_ADMIN') %}
+            <div>
+                <a class="btn btn-default" href="{{ path('customer_purchase_history_list', {'customer_account_id': customer_account.getId}) }}">Purchase History</a>
+            </div>
+            <div>
+                <a class="btn btn-default" href="{{ path('user_edit', {'id': user.getId}) }}">Edit user</a>
+            </div>
+            <div>
+                <a class="btn btn-default" href="{{ path('user_ban', {'id': user.getId}) }}">Ban user</a>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}

@@ -22,9 +22,11 @@
                 Available {{ product.getQuantity }}
             </small>
         </div>
-        <div class="col-md-2 text-right">
-            <a href="{{ path('product_edit', {'id': product.getId}) }}">Edit</a>
-        </div>
+        {% if is_granted('ROLE_ADMIN') %}
+            <div class="col-md-2 text-right">
+                <a href="{{ path('product_edit', {'id': product.getId}) }}">Edit</a>
+            </div>
+        {% endif %}
         <div class="col-md-8 text-right pull-right">
             <form method="post" action="{{ path('cart_add') }}">
                 <input class="hide" type="text" name="product_id" value="{{ product.getId }}">
