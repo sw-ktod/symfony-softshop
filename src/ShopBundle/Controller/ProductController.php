@@ -88,6 +88,20 @@ class ProductController extends Controller
                     ->find($product->getCategory()->getId()));
             $product->setVisitedCount($product_data->getVisitedCount());
 
+            $file = $product->getImage();
+
+            if ($file) {
+                // Generate a unique name for the file before saving it
+                $fileName = md5(uniqid()).'.'.$file->guessExtension();
+                // Move the file to the directory where brochures are stored
+                $file->move(
+                    $this->getParameter('upload_directory'),
+                    $fileName
+                );
+                $product->setImageUrl($fileName);
+
+            }
+
             $mgr = $this->getDoctrine()->getManager();
             $mgr->merge($product);
             $mgr->flush();
