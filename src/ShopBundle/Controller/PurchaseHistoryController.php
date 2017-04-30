@@ -47,7 +47,10 @@ class PurchaseHistoryController extends Controller
     {
         $id = $request->attributes->get('id');
 
-        $purchase_history = $this->getDoctrine()->getRepository(PurchaseHistory::class)->find($id);
+        $purchase_history = $this
+            ->getDoctrine()
+            ->getRepository(PurchaseHistory::class)
+            ->find($id);
 
         return [
             'purchase_history' => $purchase_history
@@ -69,7 +72,7 @@ class PurchaseHistoryController extends Controller
         $total_amount = 0;
 
         foreach($purchase_history as $item) {
-            $total_amount += $item->getAmount();
+            $total_amount += ($item->getAmount() * $item->getQuantity());
         }
 
         return [
@@ -96,7 +99,7 @@ class PurchaseHistoryController extends Controller
         $total_amount = 0;
 
         foreach($purchase_history as $item) {
-            $total_amount += $item->getAmount();
+            $total_amount += ($item->getAmount() * $item->getQuantity());
         }
 
         return [
