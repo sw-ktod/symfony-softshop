@@ -1,0 +1,22 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}AppBundle:User:get{% endblock %}
+
+{% block body %}
+    <div class="col-md-6">
+        <h3>Username: <span class="text-right">{{ user.getUsername }}</span></h3>
+        <p>Name: {{ user.getName ~ ' ' ~ user.getSurname }}</p>
+        <p>Address: {{ user.getAddress }}</p>
+    </div>
+    <div class="col-md-3">
+        <h3>Balance: $ {{ customer_account.getBalance }}</h3>
+    </div>
+    <div class="col-md-3 text-right">
+        <div>
+            <a class="btn btn-default" href="{{ path('user_edit', {'id': user.getId}) }}">Edit user</a>
+        </div>
+        <div>
+            <a class="btn btn-default" href="{{ path('user_ban', {'id': user.getId}) }}">Ban user</a>
+        </div>
+    </div>
+{% endblock %}

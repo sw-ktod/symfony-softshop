@@ -1,0 +1,42 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}ShopBundle:Cart:get{% endblock %}
+
+{% block body %}
+    <div class="col-md-6">
+        <table class="table table-striped table-hover ">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Username</th>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Email</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                    <tr>
+                        <td>
+                            <a href={{ path('user_get', {'id': user.getId}) }}>
+                                {{ user.getId }}
+                            </a>
+                        </td>
+                        <td>
+                            {{ user.getUsername }}
+                        </td>
+                        <td>
+                            {{ user.getName }}
+                        </td>
+                        <td>
+                            {{ user.getSurname}}
+                        </td>
+                        <td>
+                            {{ user.getEmail }}
+                        </td>
+                    </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
