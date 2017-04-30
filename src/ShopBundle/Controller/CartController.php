@@ -76,10 +76,17 @@ class CartController extends Controller
             throw new Exception('Insufficient quantity');
         }
 
-        $cart[$product->getId()] = [
-            'product' => $product,
-            'quantity' => $quantity
-        ];
+        $product_id = $product->getId();
+
+        if(isset($cart[$product_id])) {
+            $cart[$product_id]['quantity'] += $quantity;
+        } else {
+            $cart[$product_id] = [
+                'product' => $product,
+                'quantity' => $quantity
+            ];
+        }
+
 
         $this->get('session')->set('cart', $cart);
 
