@@ -26,18 +26,24 @@ class UserType extends AbstractType
                 'attr' => [
                     'class' => 'form-control pull-left',
                     'id' => 'username',
-                    'type' => 'text'
-                ]
+                    'type' => 'text',
+                    'disabled' => $options['action'] !== 'register'
+                ],
+                'required' => $options['action'] === 'register',
+                'empty_data'  => null
             ])
             ->add('email', EmailType::class, [
                 'label' => 'Email',
                 'attr' => [
                     'class' => 'form-control pull-left',
                     'id' => 'email',
-                    'type' => 'text'
-                ]
+                    'type' => 'text',
+                    'disabled' => $options['action'] !== 'register'
+                ],
+                'required' => $options['action'] === 'register',
+                'empty_data'  => null
             ])
-            ->add('Name', TextType::class, [
+            ->add('name', TextType::class, [
                 'label' => 'Name',
                 'attr' => [
                     'class' => 'form-control',
@@ -77,7 +83,9 @@ class UserType extends AbstractType
                         'class' => 'form-control',
                         'id' => 'password',
                         'type' => 'text'
-                    ]
+                    ],
+                    'required' => $options['action'] === 'register',
+                    'empty_data'  => null
                 ],
                 'second_options' => [
                     'label' => 'Repeat Password',
@@ -85,12 +93,27 @@ class UserType extends AbstractType
                         'class' => 'form-control',
                         'id' => 'username',
                         'type' => 'text'
-                    ]
-                ]
-            ])
-            ->add('submit', SubmitType::class, [
+                    ],
+                    'required' => $options['action'] === 'register',
+                    'empty_data'  => null
+                ],
+                'required' => $options['action'] === 'register',
+                'empty_data'  => null
+            ]);
+            if($options['action'] === 'self_edit') {
+                $builder->add('password_current', PasswordType::class, [
+                    'label' => 'Current Password',
+                    'attr' => [
+                        'class' => 'form-control',
+                        'id' => 'password_current',
+                        'type' => 'password'
+                    ],
+                    'required' => $options['action'] === 'self_edit'
+                ]);
+            }
+            $builder->add('submit', SubmitType::class, [
                 'attr' => [
-                    'class' => 'btn btn-primary pull-right',    
+                    'class' => 'btn btn-primary pull-right',
                     'style' => 'margin-top: 10px;'
                 ]
             ]);

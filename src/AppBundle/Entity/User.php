@@ -27,7 +27,6 @@ class User implements UserInterface
      * @var string
      *
      * @ORM\Column(name="username", type="string", length=255, unique=true)
-     * @Assert\NotBlank()
      */
     private $username;
 
@@ -35,8 +34,6 @@ class User implements UserInterface
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=255, unique=true)
-     * @Assert\Email()
-     * @Assert\NotBlank()
      */
     private $email;
 
@@ -49,10 +46,13 @@ class User implements UserInterface
 
     /**
      * @var string
-     * @Assert\NotBlank()
-     * @Assert\Length(min="3")
      */
     private $password_raw;
+
+    /**
+     * @var string
+     */
+    private $password_current;
 
     /**
      * @var string
@@ -76,7 +76,6 @@ class User implements UserInterface
 
     /**
      * @var string
-     * @Assert\NotBlank()
      * @ORM\Column(name="address", type="string", length=255)
      */
     private $address;
@@ -86,6 +85,11 @@ class User implements UserInterface
      * @ORM\Column(name="is_banned", type="binary")
      */
     private $is_banned;
+
+    /**
+     * @var int
+     */
+    private $customer_account_id;
 
     /**
      * Get id
@@ -275,6 +279,7 @@ class User implements UserInterface
 
     /**
      * @param string $surname
+     * @return $this
      */
     public function setSurname($surname)
     {
@@ -327,6 +332,44 @@ class User implements UserInterface
     public function setId($id)
     {
         $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCustomerAccountId()
+    {
+        return $this->customer_account_id;
+    }
+
+    /**
+     * @param $customer_account_id
+     * @return $this
+     */
+    public function setCustomerAccountId($customer_account_id)
+    {
+        $this->customer_account_id = $customer_account_id;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPasswordCurrent()
+    {
+        return $this->password_current;
+    }
+
+    /**
+     * @param string $password_current
+     * @return $this
+     */
+    public function setPasswordCurrent($password_current)
+    {
+        $this->password_current = $password_current;
+
         return $this;
     }
 }
