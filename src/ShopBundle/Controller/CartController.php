@@ -146,7 +146,10 @@ class CartController extends Controller
         }
 
         $user_id = $this->getUser()->getId();
-        $customer_account = $this->getDoctrine()->getRepository(CustomerAccount::class)->findOneBy(['user_id' => $user_id]);
+        $customer_account = $this
+            ->getDoctrine()
+            ->getRepository(CustomerAccount::class)
+            ->findOneBy(['user_id' => $user_id]);
 
         $available_balance = $customer_account->getBalance();
 
@@ -154,14 +157,19 @@ class CartController extends Controller
             throw new Exception('Insufficient amount');
         }
 
-        $em = $this->getDoctrine()->getManager();
-        $product_repository = $this->getDoctrine()->getRepository(Product::class);
+        $em = $this
+            ->getDoctrine()
+            ->getManager();
+        $product_repository = $this
+            ->getDoctrine()
+            ->getRepository(Product::class);
 
         $em->getConnection()->beginTransaction();
         try {
             $purchase_date = date_create();
             foreach($cart as $item) {
-                $product = $product_repository->findOneBy(['id' => $item['product']->getId()]);
+                $product = $product_repository
+                    ->findOneBy(['id' => $item['product']->getId()]);
 
                 if ($product->getQuantity() < $item['quantity']) {
                     throw new Exception('Insufficient product quantity');
@@ -176,14 +184,14 @@ class CartController extends Controller
                     ->setCustomerAccount($customer_account)
                     ->setCustomerId($customer_account->getId())
                     ->setProductId($product->getId())
+                    ->setProduct($product)
                     ->setDateCreated($purchase_date)
                     ->setAmount($product->getPrice());
-
                 $em->persist($purchase_history);
             }
             $customer_account->takeCash($total);
-            $em->merge($customer_account);
 
+            $em->merge($customer_account);
             $em->flush();
 
             $this->get('session')->set('cart', []);
