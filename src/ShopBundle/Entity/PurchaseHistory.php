@@ -30,7 +30,8 @@ class PurchaseHistory
 
     /**
      * @var CustomerAccount
-     * @ORM\OneToOne(targetEntity="ShopBundle\Entity\CustomerAccount")
+     * @ORM\ManyToOne(targetEntity="ShopBundle\Entity\CustomerAccount")
+     * @ORM\JoinColumn(name="customer_account_id", referencedColumnName="id")
      */
     private $customer_account;
 
@@ -49,8 +50,8 @@ class PurchaseHistory
     private $quantity;
 
     /**
-     * @var int
-     * @ORM\Column(name="spent", type="integer")
+     * @var string
+     * @ORM\Column(name="spent", type="decimal", precision=10, scale=0)
      */
     private $spent;
 
@@ -77,7 +78,6 @@ class PurchaseHistory
      *
      * @param $customer_account_id
      * @return PurchaseHistory
-     * @internal param int $customerId
      *
      */
     public function setCustomerId($customer_account_id)
@@ -102,7 +102,6 @@ class PurchaseHistory
      *
      * @param $product_id
      * @return PurchaseHistory
-     * @internal param int $productId
      *
      */
     public function setProductId($product_id)
@@ -190,7 +189,7 @@ class PurchaseHistory
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getSpent()
     {
@@ -198,7 +197,7 @@ class PurchaseHistory
     }
 
     /**
-     * @param int $spent
+     * @param string $spent
      * @return $this
      */
     public function setSpent($spent)
