@@ -37,27 +37,47 @@ class PurchaseHistoryController extends Controller
      */
     public function listAction()
     {
-        $purchase_history = $this->getDoctrine()->getRepository(PurchaseHistory::class)->findAll();
+        $purchase_history = $this
+            ->getDoctrine()
+            ->getRepository(PurchaseHistory::class)
+            ->findAll();
+
+        $total_amount = 0;
+
+        foreach($purchase_history as $item) {
+            $total_amount += $item->getSpent();
+        }
 
         return [
-            'purchase_history' => $purchase_history
+            'purchase_history' => $purchase_history,
+            'total_amount' => $total_amount
         ];
     }
 
     /**
-     * @Route("/purchaseHistory/{customer_id}", name="customer_purchase_history_list")
+     * @Route("/purchaseHistory/customer/{customer_account_id}", name="customer_purchase_history_list")
      * @Method("GET")
      * @Template
      * @param Request $request
      * @return array
      */
     public function listByCustomerAction(Request $request) {
-        $customer_id = $request->attributes->get('customer_id');
+        $customer_account_id = $request->attributes->get('customer_account_id');
 
-        $purchase_history = $this->getDoctrine()->getRepository(PurchaseHistory::class)->findBy(['customer_id' => $customer_id]);
+        $purchase_history = $this
+            ->getDoctrine()
+            ->getRepository(PurchaseHistory::class)
+            ->findBy(['customer_account_id' => $customer_account_id]);
+
+        $total_amount = 0;
+
+        foreach($purchase_history as $item) {
+            $total_amount += $item->getSpent();
+        }
 
         return [
-            'purchase_history' => $purchase_history
+            'purchase_history' => $purchase_history,
+            'total_amount' => $total_amount
         ];
     }
 
@@ -67,10 +87,19 @@ class PurchaseHistoryController extends Controller
      * @Template
      */
     public function listOwnAction() {
-        $user_id = $this->getUser()->getId();
-        $customer_id = $this->getDoctrine()->getRepository(CustomerAccount::class)->findOneBy(['user_id' => $user_id])->getId();
+        $user_id = $this
+            ->getUser()
+            ->getId();
+        $customer_id = $this
+            ->getDoctrine()
+            ->getRepository(CustomerAccount::class)
+            ->findOneBy(['user_id' => $user_id])
+            ->getId();
 
-        $purchase_history = $this->getDoctrine()->getRepository(PurchaseHistory::class)->findBy(['customer_id' => $customer_id]);
+        $purchase_history = $this
+            ->getDoctrine()
+            ->getRepository(PurchaseHistory::class)
+            ->findBy(['customer_id' => $customer_id]);
         return [
             'purchase_history' => $purchase_history
         ];

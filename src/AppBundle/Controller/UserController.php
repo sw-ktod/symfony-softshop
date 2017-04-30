@@ -22,8 +22,15 @@ class UserController extends Controller
     public function getAction(Request $request)
     {
         $user_id = $request->attributes->get('id');
-        $user = $this->getDoctrine()->getRepository(User::class)->find($user_id);
-        $customer_account = $this->getDoctrine()->getRepository(CustomerAccount::class)->findBy(['user_id' => $user->getId()])[0];
+        $user = $this
+            ->getDoctrine()
+            ->getRepository(User::class)
+            ->find($user_id);
+
+        $customer_account = $this
+            ->getDoctrine()
+            ->getRepository(CustomerAccount::class)
+            ->findOneBy(['user_id' => $user->getId()]);
 
         return [
             'user' => $user,
@@ -40,6 +47,15 @@ class UserController extends Controller
     {
         $users = $this->getDoctrine()->getRepository(User::class)->findAll();
 
+        foreach($users as $user) {
+            $user->setCustomerAccountId(
+                $this->getDoctrine()
+                    ->getRepository(CustomerAccount::class)
+                    ->findOneBy(['user_id'=> $user->getId()])
+                    ->getId()
+            );
+        }
+
         return [
             'users' => $users
         ];
@@ -52,20 +68,24 @@ class UserController extends Controller
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function addCashAction(Request $request) {
-        $customer_account = $this->getDoctrine()
+        $customer_account = $this
+            ->getDoctrine()
             ->getRepository(CustomerAccount::class)
             ->findOneBy(['user_id' => $request->attributes->get('id')]);
 
-        $customer_account->addCash($request->request->get('amount'));
+        $customer_account
+            ->addCash($request->request->get('amount'));
 
-        $em = $this->getDoctrine()->getManager();
+        $em = $this
+            ->getDoctrine()
+            ->getManager();
 
         $em->merge($customer_account);
         $em->flush();
 
-        $refererRoute = $request->headers->get('referer');
+        $referrerRoute = $request->headers->get('referer');
 
-        return $this->redirect($refererRoute);
+        return $this->redirect($referrerRoute);
     }
 
 }

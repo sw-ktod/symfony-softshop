@@ -55,10 +55,12 @@ class ProductController extends Controller
             'form' => $form->createView()
         ];
     }
+
     /**
      * @Route("/product/{id}/edit", name="product_edit")
      * @Template()
      * @param Request $request
+     * @return array
      */
     public function editAction(Request $request) {
         $product_id = $request->attributes->get('id');
