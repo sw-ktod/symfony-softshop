@@ -87,13 +87,12 @@ class Role implements RoleInterface
         return $this->users;
     }
 
-    /**
-     * @param mixed $users
-     * @return $this
-     */
-    public function setUsers($users)
-    {
-        $this->users = $users;
+    public function addUser(User $user) {
+        if(!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->addRole($this);
+        }
+
         return $this;
     }
 }

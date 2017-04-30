@@ -67,7 +67,7 @@ class SecurityController extends Controller
                 ->getDoctrine()
                 ->getRepository('AppBundle:Role')
                 ->findOneBy(['name'=>'ROLE_USER']);
-            $user->setRoles([$userRole]);
+            $user->addRole($userRole);
 
             $em = $this->getDoctrine()->getManager();
 

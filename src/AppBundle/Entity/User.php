@@ -202,13 +202,13 @@ class User implements AdvancedUserInterface
         return $this->roles->toArray();
     }
 
-    public function setRoles($roles) {
-        $this->roles = $roles;
-        return $this;
-    }
+    public function addRole(Role $role) {
+        if(!$this->roles->contains($role)) {
+            $this->roles[] = $role;
+            $role->addUser($this);
+        }
 
-    public function addRole($role) {
-        array_push($this->roles, $role);
+        return $this;
     }
 
     /**
