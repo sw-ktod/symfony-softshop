@@ -8,8 +8,14 @@
         <p>Name: {{ user.getName ~ ' ' ~ user.getSurname }}</p>
         <p>Address: {{ user.getAddress }}</p>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-3 text-right">
         <h3>Balance: $ {{ customer_account.getBalance }}</h3>
+        <div>
+            <form  method="post" action="{{ path('user_add_cash', {'id': user.getId}) }}">
+                <input type="number" min="1" name="amount">
+                <button class="btn btn-default" type="submit">Add Cash</button>
+            </form>
+        </div>
     </div>
     <div class="col-md-3 text-right">
         <div>
