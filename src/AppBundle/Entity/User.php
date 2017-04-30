@@ -195,7 +195,17 @@ class User implements AdvancedUserInterface
      */
     public function getRoles()
     {
-        return $this->roles;
+        return ['ROLE_USER', 'ROLE_ADMIN'];
+
+//        return $this->roles;
+    }
+
+    public function setRoles($roles) {
+        $this->roles = $roles->toArray();
+    }
+
+    public function addRole($role) {
+        array_push($this->roles, $role);
     }
 
     /**
