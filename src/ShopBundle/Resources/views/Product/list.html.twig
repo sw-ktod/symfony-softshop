@@ -19,7 +19,7 @@
         {% for product in products %}
             <div class="col-md-4 well well-md text-center">
                 <a href={{ path('product_get', {'id': product.getId}) }}>
-                    <div class="col-md-10 table-bordered">
+                    <div class="table-bordered">
                         <img class="img-thumbnail" src="{{ uploads_route ~ product.getImageUrl}}" alt="">
                         <h4>
                             {{ product.getName() }}
