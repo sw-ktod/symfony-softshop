@@ -24,9 +24,9 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
 
     public function load(ObjectManager $manager)
     {
-        $admin_role = $manager
+        $roles = $manager
             ->getRepository('AppBundle:Role')
-            ->findOneBy(['name'=>'ROLE_ADMIN']);
+            ->findAll();
 
         $userSuperAdmin = new User();
 
@@ -38,8 +38,12 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
             ->setIsBanned(false)
             ->setName('super')
             ->setSurname('admin')
-            ->setIsBanned(false)
-            ->addRole($admin_role);
+            ->setIsBanned(false);
+
+        foreach($roles as $role) {
+            $userSuperAdmin
+                ->addRole($role);
+        }
 
         $encrypt = $this->container->get('security.password_encoder');
         $userSuperAdmin->setPassword($encrypt->encodePassword($userSuperAdmin, '123'));
