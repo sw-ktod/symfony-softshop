@@ -222,8 +222,6 @@ class SecurityController extends Controller
 
             $em->merge($user);
             $em->flush();
-
-            return $this->redirectToRoute('user_get', ['id' => $user->getId()]);
         }
 
         return [
